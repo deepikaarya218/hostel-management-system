@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Register</title>
+        <link rel="stylesheet" href="register.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Create Account</h1>
+            <p class="para">Choose your role to get started</p>
+
+            <div class="roles">
+                <button class="role-button active" onclick="register(this,'student')">Student</button>
+                <button class="role-button" onclick="register(this,'warden')">Warden</button>
+                <button class="role-button" onclick="register(this,'admin')">Admin</button>
+            </div>
+
+            <!-- STUDENT FORM -->
+            <div class="student" id="student-form">
+                <h2>Student Registration</h2>
+                <p>Create your student account</p>
+
+                <div class="form-group">
+                    <label for="student-name">Full Name</label>
+                    <input class="input-field" type="text" id="student-name" placeholder="Enter your name" required>
+
+                    <label for="student-ID">Student ID</label>
+                    <input class="input-field"   type="text" id="student-ID" placeholder="Enter your student ID" required>
+
+                    <label for="student-block">Block Number</label>
+                    <input class="input-field" type="text" id="student-block" placeholder="Enter block number" required>
+
+                    <label for="student-room">Room Number</label>
+                    <input class="input-field" type="text" id="student-room" placeholder="Enter room number" required>
+
+                    <label for="student-email">Email</label>
+                    <input class="input-field" type="email" id="student-email" placeholder="Enter your email" required>
+
+                    <label for="student-phone">Phone Number</label>
+                    <input class="input-field" type="tel" id="student-phone" placeholder="Enter your phone number" required>
+
+                    <label for="student-password">Password</label>
+                    <input class="input-field" type="password" id="student-password" placeholder="Enter your password" required>
+
+                    <label for="student-confirm-password">Confirm Password</label>
+                    <input class="input-field" type="password" id="student-confirm-password" placeholder="Confirm your password" required>
+                </div>
+
+                <button class="submit-button" onclick="submitStudent()">Create Account</button>
+
+                <p class="login-link">Already have an account? <a href="index.html">Sign in here</a></p>
+            </div>
+
+            <!-- WARDEN FORM -->
+
+            <div class="warden hidden" id="warden-form">
+                <h2>Warden Registration</h2>
+                <p>Create your warden account</p>
+
+                <div class="form-group">
+                    <label for="warden-name">Full Name</label>
+                    <input type="text" class="input-field" id="warden-name" placeholder="Enter your name" required>
+
+                    <label for="warden-ID">Employee ID</label>
+                    <input type="text" class="input-field" id="warden-ID" placeholder="Enter your warden ID" required>
+
+                    <label for="warden-block">Assigned Block</label>
+                    <input type="text" class="input-field" id="warden-block" placeholder="Enter block number" required>
+
+                    <label for="warden-email">Email</label>
+                    <input type="email" class="input-field" id="warden-email" placeholder="Enter your email" required>
+
+                    <label for="warden-phone">Phone Number</label>
+                    <input type="tel" class="input-field" id="warden-phone" placeholder="Enter your phone number" required>
+
+                    <label for="warden-password">Password</label>
+                    <input type="password" class="input-field" id="warden-password" placeholder="Enter your password" required>
+
+                    <label for="warden-confirm-password">Confirm Password</label>
+                    <input type="password" class="input-field"  id="warden-confirm-password" placeholder="Confirm your password" required>
+                </div>
+
+                <button class="submit-button" onclick="submitWarden()">Create Account</button>
+
+                <p class="login-link">Already have an account? <a href="index.html">Sign in here</a></p>
+            </div>
+
+            <!-- ADMIN FORM -->
+             <div class="admin hidden" id="admin-form">
+                <h2>Admin Registration</h2>
+                <p>Create your admin account</p>
+
+                <div class="form-group">
+                    <label for="admin-name">Full Name</label>
+                    <input type="text" class="input-field" id="admin-name" placeholder="Enter your name" required>
+
+                    <label for="admin-ID">Admin Code</label>
+                    <input type="text" class="input-field" id="admin-ID" placeholder="Enter your admin code" required>
+
+                    <label for="admin-email">Email</label>
+                    <input type="email" class="input-field" id="admin-email" placeholder="Enter your email" required>
+
+                    <label for="admin-phone">Phone Number</label>
+                    <input type="tel" class="input-field" id="admin-phone" placeholder="Enter your phone number" required>
+
+                    <label for="admin-password">Password</label>
+                    <input type="password" class="input-field"  id="admin-password" placeholder="Enter your password" required>
+
+                    <label for="admin-confirm-password">Confirm Password</label>
+                    <input type="password" class="input-field" id="admin-confirm-password" placeholder="Confirm your password" required>
+                </div>
+
+                <button class="submit-button" onclick="submitAdmin()">Create Account</button>
+
+                <p class="login-link">Already have an account? <a href="index.html">Sign in here</a></p>
+            </div> 
+
+        </div>
+    </body>
+    <script src="register.js"></script>
+</html>

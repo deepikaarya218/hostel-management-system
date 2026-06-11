@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Complaints</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/complaint.css">
+    </head>
+    <body>
+        <div class="container">
+            <div id="slidebar-container"></div>
+            <div class="main-content">
+                <h1>Complaints</h1>
+                <p>Welcome to the Complaints page. Here you can submit any issues or concerns you have regarding the hostel.</p>
+                <div class="dashboard">
+                <div class="left-side">
+                    <h3>Raise Complaint</h3>
+                    <div class="detail">
+                        <div class="field">
+                        <label for="name">Full Name:</label>
+                        <input id="studentName" type="text" placeholder="Enter Name" required>
+                        </div>
+                        
+                        <div class="field">
+                        <label for="room">Room No.</label>
+                        <input id="room" type="text" placeholder="Enter Room No." required>
+                        </div>
+                    </div>
+                    <div class="complaint">
+                        <div class="field">
+                        <label for="complaint">Complaint:</label>
+                        <select id="complaint" class="complaint-section" required>
+                            <option value="">Select category</option>
+                            <option value="Plumbing">Plumbing</option>
+                            <option value="Electricity">Electricity</option>
+                            <option value="Cleanliness">Cleanliness</option>
+                            <option value="Food">Food</option>
+                            <option value="Furniture">Furniture</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        </div>
+
+                        <div class="field">
+                        <label for="priority">Priority:</label>
+                        <select id="priority" class="priority-section" required>
+                            <option value="">Select Priority</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="title">
+                        <label for="title">Complaint Title:</label>
+                        <input id="title" type="text" placeholder="Brief summary of the complaint" required>
+                    </div>
+                    <div class="detail-title">
+                        <label for="description">Detailed Description:</label>
+                        <input id="detail" type="text" placeholder="Provide a detailed description of the complaint" required>
+                    </div>
+                    <div class="upload-container">
+                        <label class="upload-label">Upload Image (Optional)</label>
+
+                        <div class="upload-box">
+                            <input type="file" id="fileUpload" hidden>
+                            <button type="button" class="upload-btn" onclick="document.getElementById('fileUpload').click()">Choose File</button>
+                            <span id="fileName">No file chosen</span>
+                        </div>
+                    </div>
+                    <div class="submit">
+                       <button type="button" class="submit-btn">Submit Complaint</button>
+                       <button type="reset" class="reset-btn">Clear</button>
+                    </div>
+                </div>
+
+                <div class="right-side">
+                    <h3>Previous Complaints</h3>
+                    <div class="search">
+                        <input type="text" placeholder="Search complaints...">
+                    </div>
+                    <div class="filter">
+                        <button class="filter-btn">All</button>
+                        <button class="filter-btn">In Progress</button>
+                        <button class="filter-btn">Resolved</button>
+                        <button class="filter-btn">Pending</button>
+                    </div>
+                    <div id="complaints-list">
+                        <div class="complaint-item">
+                            <h4 class="complaint-title">Leaking Faucet in Room 101</h4>
+                            <div class="complaint-meta">
+                                <span><strong>Category:</strong> Plumbing</span>
+                                <span><strong>Priority:</strong> High</span>
+                            </div>
+                            <div class="complaint-actions">
+                                <button class="status-btn">In Progress</button>
+                                <button onclick="showComplaint()" class="view-btn">View</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="complaint-detail" id="complaintDetail">
+                        <div class="modal-content">
+                            <span class="close-btn" onclick="closeComplaint()">&times;</span>
+                            <h2>Leaking Faucet in Room 101</h2>
+                            <p>The faucet in Room 101 has been leaking continuously, making it difficult to use the wash
+                                area properly and causing water wastage. Kindly arrange for its repair at the earliest to 
+                                avoid inconvenience to students and prevent further damage.</p>
+                            <span><strong>Category:</strong> Plumbing</span>
+                            <span><strong>Priority:</strong> High</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="js/complaint.js"></script>
+</html>

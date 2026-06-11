@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="left">
+                <img src="login.jpeg" alt="Login Image">
+            </div>
+            <div class="right">
+                <div class="form">
+                    <h1>Welcome Back!</h1>
+                    <p class="para">Sign in to your account to continue</p>
+
+                    <div class="role-box">
+                        <button class="role-btn active" onclick="selectRole(this,'student')">
+                            Student
+                        </button>
+                        
+                        <button class="role-btn" onclick="selectRole(this,'warden')">
+                            Warden
+                        </button>
+                        
+                        <button class="role-btn" onclick="selectRole(this,'admin')">
+                            Admin
+                        </button>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="useremail">Email Address</label>
+                        <input class="input-field" type="email" id="useremail" placeholder="your@example.com">
+
+                        <label for="password">Password</label>
+                        <input class="input-field" type="password" id="password" placeholder="Enter your password">
+                    </div>
+
+                    <button class="login-btn" onclick="login()">Sign In</button>
+
+                    <p class="forgot-link">Trouble logging in? <a href="#">Forgot Password?</a></p>
+
+                    <p class="signup-link">Don't have an account? <a href="register.html">Sign Up</a></p>
+
+
+                    
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src = "script.js"></script>
+</html>

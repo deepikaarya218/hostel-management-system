@@ -1,0 +1,129 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+h2{
+    margin-bottom: 8px;
+}
+
+p{
+    margin-top: 0;
+}
+
+.para{
+    margin-top: 0;
+    color: #8b8585;
+}
+
+.roles{
+    display: flex;
+    background-color: #e5e5e5;
+    padding: 4px;
+    border-radius: 8px;
+    gap: 15px;
+    width: 30%;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.roles button{
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.role-button.active{
+    background-color: white;
+    border-radius: 8px;
+}
+
+.student{
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 650px;
+    margin-bottom: 20px;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+    width: 500px;
+
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    gap: 10px;
+    width: 500px;
+}
+
+.input-field{
+    padding: 10px;
+    font-size: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 500px;
+}
+
+.submit-button{
+    padding: 10px;
+    font-size: 12px;
+    border-radius: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    width: 500px;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* WARDEN CSS */
+
+.warden{
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 650px;
+    margin-bottom: 20px;
+}
+
+.admin{
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 650px;
+    margin-bottom: 20px;
+}
+
+.hidden{
+    display: none !important;
+}

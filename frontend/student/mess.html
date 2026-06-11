@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mess Menu</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/mess.css">
+    </head>
+    <body onload="loadSidebar()">
+        <!-- Include the slidebar -->
+        <div class="container">
+            <div id="slidebar-container"></div>
+            <div class="main-content">
+                <h1>Today's Mess Menu</h1>
+                <p>Sunday, May 31, 2026</p>
+                
+                <div class="menu-section">
+                    <div class="menu-category">
+                        <p>🍳</p>
+                        <h2>BreakFast</h2>
+                        <p>7:00 AM - 9:00 AM</p>
+                        <span class="active">Active Now</span>
+                    </div>
+                    <div class="menu-category">
+                        <p>🍛</p>
+                        <h2>Lunch</h2>
+                        <p>12:00 PM - 2:00 PM</p>
+                    </div>
+                    <div class="menu-category">
+                        <p>🥪</p>
+                        <h2>Snacks</h2>
+                        <p>4:00 PM - 5:00 PM</p>
+                    </div>
+                    <div class="menu-category">
+                        <p>🍽️</p>
+                        <h2>Dinner</h2>
+                        <p>7:00 PM - 9:00 PM</p>
+                    </div>
+                </div>
+
+                <!-- MESS SCHEDULE: -->
+                <div class="schedule">
+                    <h2>Weekly Mess Schedule</h2>
+                    <table>
+                        <tr>
+                            <th>Day</th>
+                            <th>Breakfast</th>
+                            <th>Lunch</th>
+                            <th>Snacks</th>
+                            <th>Dinner</th>
+                        </tr>
+                        <tr>
+                            <td>Monday</td>
+                            <td>Pancakes, Eggs, Juice</td>
+                            <td>Rice, Dal, Chicken Curry, Salad</td>
+                            <td>Samosa, Tea</td>
+                            <td>Chapati, Vegetable Curry, Raita</td>
+                        </tr>
+                        <tr>
+                            <td>Tuesday</td>
+                            <td>Oatmeal, Fruits, Milk</td>
+                            <td>Roti, Dal, Paneer Curry, Salad</td>
+                            <td>Vada, Coffee</td>
+                            <td>Naan, Vegetable Curry, Raita</td>
+                        </tr>
+                        <tr>
+                            <td>Wednesday</td>
+                            <td>Idli, Sambar, Coconut Chutney</td>
+                            <td>Rice, Dal, Fish Curry, Salad</td>
+                            <td>Pakora, Tea</td>
+                            <td>Chapati, Vegetable Curry, Raita</td>
+                        </tr>
+                        <tr>
+                            <td>Thursday</td>
+                            <td>Toast, Eggs, Juice</td>
+                            <td>Roti, Dal, Chicken Curry, Salad</td>
+                            <td>Samosa, Coffee</td>
+                            <td>Naan, Vegetable Curry, Raita</td>
+                        </tr>
+                        <tr>
+                            <td>Friday</td>
+                            <td>Poha, Yogurt, Milk</td>
+                            <td>Rice, Dal, Paneer Curry, Salad</td>
+                            <td>Vada, Tea</td>
+                            <td>Chapati, Vegetable Curry, Raita</td>
+                        </tr>
+                        <tr>
+                            <td>Saturday</td>
+                            <td>Paratha, Yogurt, Juice</td>
+                            <td>Roti, Dal, Fish Curry, Salad</td>
+                            <td>Pakora, Coffee</td>
+                            <td>Naan, Vegetable Curry, Raita</td>
+                        </tr>
+                        <tr>
+                            <td>Sunday</td>
+                            <td>Waffles, Eggs, Juice</td>
+                            <td>Rice, Dal, Chicken Curry, Salad</td>
+                            <td>Samosa, Tea</td>
+                            <td>Chapati, Vegetable Curry, Raita</td>
+                        </tr>
+                    </table>
+
+                    <span class="note">Note: Menu is updated weekly by the hostel warden.</span>
+                </div>
+
+                <!-- EXTRA ITEMS ANYTIME -->
+                <div class="extra">
+                    <h2>Extra Items (Available Anytime)</h2>
+                    <div class="extra-items">
+                        <p>🥛</p>
+                        <h3>Milk</h3>
+                        <h4>₹15</h4>
+                        <button  onclick="addToCart('Milk', 15)" class="order-btn">Add to Cart</button>
+                    </div>
+                    <div class="extra-items">
+                        <p>🍪</p>
+                        <h3>Cookies</h3>
+                        <h4>₹10</h4>    
+                        <button  onclick="addToCart('Cookies', 10)" class="order-btn">Add to Cart</button>
+                    </div>
+                    <div class="extra-items">
+                        <p>🍎</p>
+                        <h3>Fruits</h3>
+                        <h4>₹20</h4>
+                        <button  onclick="addToCart('Fruits', 20)" class="order-btn">Add to Cart</button>
+                    </div>
+                    <div class="extra-item">
+                        <p>☕</p>
+                        <h3>Tea</h3>
+                        <h4>₹10</h4>
+                        <button  onclick="addToCart('Tea', 10)" class="order-btn">Add to Cart</button>
+                    </div>
+                    <div class="extra-item">
+                        <p>🍵</p>
+                        <h3>Coffee</h3>
+                        <h4>₹15</h4>
+                        <button  onclick="addToCart('Coffee', 15)" class="order-btn">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- HISTORY OF MESS MENU:orders -->
+
+                <div class="history">
+                    <h2>My Recent Orders</h2>
+                    <table>
+                        <tr>
+                            <th>Date</th>
+                            <th>Item</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td>May 30, 2026</td>
+                            <td>Milk</td>
+                            <td>₹15</td>
+                        </tr>
+                        <tr>
+                            <td>May 29, 2026</td>
+                            <td>Cookies</td>
+                            <td>₹10</td>
+                        </tr>
+                        <tr>
+                            <td>May 28, 2026</td>
+                            <td>Fruits</td>
+                            <td>₹20</td>
+                        </tr>
+                    </table>
+
+                    <span class="note">Note: Order history is updated in real-time as you place orders.</span>
+                </div>
+
+                <!-- CARD SUMMARY -->
+
+                <div class="cart-summary">
+                    <h2>🛒 Cart Summary</h2>
+                    
+                    <div class="cart-item">
+                        <div>
+                            <h3>Milk</h3>
+                            <p>₹15 each</p>
+                        </div>
+
+                        <div class="quantity">
+                            <button>-</button>
+                            <span>1</span>
+                            <button>+</button>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div>
+                            <h3>Biscuit Pack</h3>
+                            <p>₹15 each</p>
+                        </div>
+
+                        <div class="quantity">
+                            <button>-</button>
+                            <span>1</span>
+                            <button>+</button>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="price-row">
+                        <span>Subtotal</span>
+                        <span>₹30</span>
+                    </div>
+
+                    <div class="price-row">
+                        <span>Tax (5%)</span>
+                        <span>₹2</span>
+                    </div>
+
+                    <hr>
+
+                    <div class="total-row">
+                        <span>Total</span>
+                        <span>₹32</span>
+                    </div>
+                </div>
+
+                <button class="continue-btn">Continue Shopping</button>
+
+                <button class="payment-btn">Proceed to Payment</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="js/slidebar.js"></script>
+</html>

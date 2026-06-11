@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Student Dashboard</title>
+        <link rel="stylesheet" href="css/dash.css">
+    </head>
+    <body onload="loadSidebar()">
+        <div id="slidebar-container"></div>
+        <div class="main-content">
+            <h1>Welcome Student</h1>
+            <div class="update-card">
+                <div class="card1">
+                    <p>Fee Status</p>
+                    <h2 id="fee-status">Loading...</h2>
+                    <p id="fee-amount">Loading...</p>
+                </div>
+                <div class="card2">
+                    <p>Complaint Status</p>
+                    <h2 id="open-complaints">Loading...</h2>
+                    <p id="resolved-complaints">Loading...</p>
+                </div>
+                <div class="card3">
+                    <p>Attendance Status</p>
+                    <h2 id="attendance-percent">Loading...</h2>
+                    <p id="attendance-status">Loading...</p>
+                </div>
+                <div class="card4">
+                    <p>Announcement</p>
+                    <h2 id="announce-count">Loading...</h2>
+                    <p id="announce-last">Loading...</p>
+                </div>
+            </div>
+            <div class="emergency">
+                <div class="emergency-text">
+                    <h3>Emergency Alert</h3>
+                    <p> Contact hostel authorities immediately in case of emergency</p>
+                </div>
+                <button class="emergency-btn">Emergency Alert</button>
+            </div>
+            <h3>Recent Activity</h3>
+            <div class="activity">
+
+                <div class="recent-complaint">
+                    <h4>Recent Complaints</h4>
+                    <div class="complaint-item">
+                        <div class="complaint-top">
+                            <p>Complaint submitted for maintenance issue</p>
+                            <span class="status open">Open</span>
+                        </div>
+                        <h5>Today</h5>
+                    </div>
+                    <div class="complaint-item">
+                        <div class="complaint-top">
+                            <p>Complaint resolved for room cleaning</p>
+                            <span class="status resolved">Resolved</span>
+                        </div>
+                        <h5>Yesterday</h5>
+                    </div>
+                </div>
+
+                <div class="recent-announce">
+                    <h4>Recent Announcements</h4>
+                    <div class="announce-item">
+                        <p>Hostel maintenance scheduled for 15th March</p>
+                        <h5>2 hour ago</h5>
+                    </div>
+                    <div class="announce-item">
+                        <p>New mess menu available for next week</p>
+                        <h5>5 hours ago</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+    <script src="js/dash.js"></script>
+</html>
