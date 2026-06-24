@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const User = require("./models/User");
 const Complaint = require("./models/Complaint");
+const Leave = require("./models/Leave");
 
 const app = express();
 const PORT = 5000;
@@ -31,7 +32,10 @@ app.post("/register", async (req, res) => {
       });
     }
 
+    console.log(req.body);
     const user = new User(req.body);
+
+    console.log("USER:", user);
 
     await user.save();
 
@@ -76,6 +80,9 @@ app.post("/login", async (req, res) => {
   }
 });
 
+
+// COMPLAINT
+
 app.post("/complaints", async(req, res) => {
     try{
         console.log("Received:");
@@ -113,6 +120,54 @@ app.get("/complaints", async (req, res) => {
         });
 
     }
+});
+
+// LEAVE
+
+app.get("/leave", async (req, res) => {
+  try{
+    const leave = await Leave.find();
+    res.json(leave);
+  } catch(error){
+    res.status(500).json({
+      message: error.message
+    });
+  }
+});
+
+app.post("/leave", async(req, res) => {
+    try{
+        console.log("Received:");
+        console.log(req.body);
+        const leave = new Leave(req.body);
+        console.log("Before Save");
+        await leave.save();
+        console.log("After Save");
+
+        res.status(201).json({
+            message: "Leave Submitted",
+            leave
+        });
+    }catch(error){
+        console.log("ERROR:");
+        console.log(error);
+
+        res.status(500).json({
+            message: error.message
+        });
+    }
+})
+
+app.get("/user/:id", async (req, res) => {
+  try{
+    const user = await User.findById(req.params.id);
+
+    res.json(user);
+  }catch(error){
+    res.status(500).json({
+      message: error.message
+    });
+  }
 });
 
 // Server Start
