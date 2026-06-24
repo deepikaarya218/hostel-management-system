@@ -12,7 +12,100 @@
             <div class="main-content">
                 <h1>Attendance</h1>
                 <p>Welcome to the Attendance page. Here you will find all the information related to your attendance records.</p>
-                <!-- Add more attendance content here -->
+                <div class="header" id="time-status">
+                    <h1> Current Status</h1>
+                    <p id="day_time">Friday, June 19, 2026</p>
+                    <div class="update" id="update">
+                        <div class="item1">
+                            <p>Hostel Status</p>
+                            <h2>Present in Hostel</h2>
+                            <p>✓ Safe and accounted for</p>
+                        </div>
+                        <div class="item2">
+                            <p>Cuurent Time</p>
+                            <h2>12:17:15 PM</h2>
+                            <p>Last sync: Just now</p>
+                        </div>
+                    </div>
+
+                    <div class="stud-detail">
+                        <div class="detail-item">
+                            <span>Name</span>
+                            <span>Jiya Arya</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>Room Number</span>
+                            <span>A-201</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>Hostel Name</span>
+                            <span>Girl Hostel A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="attend">
+                    <h2>Daily Check-In</h2>
+                    <p>Tap to confirm your presence in the hostel</p>
+                    <button class="att-btn">Check In Now</button>
+                    <p class="note">You can check in only once per day</p>
+                </div>
+
+                <div class="status">
+                    <h2>Todays's Check-In Details</h2>
+                    <div class="status-item">
+                        <span>CURRECT STATUS</span>
+                        <h4>Present</h4>
+                    </div>
+                    <div class="status-item">
+                        <span>LAST CHECK-IN</span>
+                        <h4>8:15 PM</h4>
+                    </div>
+                    <div class="status-item">
+                        <span>DATE</span>
+                        <h4>06/19/2026</h4>
+                    </div>
+                </div>
+
+                <div class="his-table">
+                    <h2>Check-In History</h2>
+                    <div class="search">
+                        <select name="cars" id="cars">
+                            <option value="All Months">All Months</option>
+                            <option value="dec">December 2025</option>
+                            <option value="nov">November 2025</option>
+                            <option value="oct">October 2025</option>
+                        </select>
+                    </div>
+                    <div class="table">
+                    <table>
+                        <thead>
+                            <tr>
+                            <th>Date</th>
+                            <th>Check-In Time</th>
+                            <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                        <tr>
+                            <td>2024-12-18</td>
+                            <td>8:50 PM</td>
+                            <td><span class="present">Present in Hostel</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-12-17</td>
+                            <td>8:50 PM</td>
+                            <td><span class="present">Present in Hostel</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-12-16</td>
+                            <td>8:50 PM</td>
+                            <td><span class="present">Present in Hostel</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

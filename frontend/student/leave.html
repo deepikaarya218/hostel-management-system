@@ -9,12 +9,143 @@
         <!-- Include the slidebar -->
         <div class="container">
             <div id="slidebar-container"></div>
-            <div class="content">
+            <div class="main-content">
                 <h1>Leave Application</h1>
-                <p>Welcome to the Leave Application page. Here you can submit your leave requests and view their status.</p>
+                <p>Manage your leave applications efficiently.</p>
                 <!-- Add more leave application content here -->
+                <div class="header">
+                    <div class="item1">
+                        <span>Total Leaves</span>
+                        <h4>Loading...</h4>
+                    </div>
+                    <div class="item2">
+                        <span>Total Leaves</span>
+                        <h4>Loading...</h4>
+                    </div>
+                    <div class="item3">
+                        <span>Day Outside Hostel</span>
+                        <h4>Loading...</h4>
+                    </div>
+                </div>
+
+                <div class="lower">
+                    <div class="left">
+                        <h4>👤 Student Information</h4>
+                        <div class="info">
+                            <div class="info-item">
+                                <span>Student Name</span>
+                                <h4 id="studentName">Loading</h4>
+                            </div>
+                            <div class="info-item">
+                                <span>Roll Number</span>
+                                <h4 id="roll">Loading</h4>
+                            </div>
+                            <div class="info-item">
+                                <span>Room Number</span>
+                                <h4 id="room">Loading</h4>
+                            </div>
+                            <div class="info-item">
+                                <span>Block</span>
+                                <h4 id="block">Loading</h4>
+                            </div>
+                        </div>
+
+                        <div class="form">
+                            <h4>📋 Leave Details</h4>
+                            <div class="dest">
+                                <div class="dest-item"><label for="dest">Destination</label>
+                                <input id="destination" name="dest" type="text" placeholder="e.g, Mumbai" required></div>
+
+                                <div class="dest-item"><label for="dest">Leave Type</label>
+                                <select id="leave" class="dest-section" required>
+                                    <option value="">Select category</option>
+                                    <option value="Home">Home</option>
+                                    <option value="Emergency">Emergency</option>
+                                    <option value="Medical">Medical</option>
+                                    <option value="Other">Other</option>
+                                </select></div>
+                            </div>
+
+                            <div id="time" class="duration">
+                                <div  class="dur-item">
+                                    <label for="from">From Date:</label>
+                                    <input type="date" id="from" required>
+                                </div>
+
+                                <div class="dur-item">
+                                    <label for="to">To Date:</label>
+                                    <input type="date" id="to" required>
+                                </div>
+                            </div>
+
+                            <div class="time">
+                                <div   class="time-item">
+                                    <label for="dept">Departure Time</label>
+                                    <input type="time" id="dept" required>
+                                </div>
+
+                                <div class="dur-item">
+                                    <label for="ret">Expected Return Time</label>
+                                    <input type="time" id="ret" required>
+                                </div>
+                            </div>
+
+                            <div class="contact">
+                                <div class="cont-item">
+                                    <label for="no">Parent Contact Number</label>
+                                    <input type="number" id="parentNo" placeholder="10 digit number" required>
+                                </div>
+
+                                <div class="cont-item">
+                                    <label for="no">Emergency Contact Number</label>
+                                    <input type="number" id="emergencyNo" placeholder="10 digit number" required>
+                                </div>
+                            </div>
+
+                            <div class="reason">
+                                <label for="reason">Reason for Leave</label>
+                                <textarea id="reason" placeholder="Please provide details about leave..."></textarea>
+                            </div>
+
+                            <div class="btn">
+                                <div class="btn-item">
+                                    <button class="submit-btn">Submit Leave</button>
+                                </div>
+
+                                <div class="btn-item">
+                                    <button class="clear-btn">Clear Form</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <h3>Previous Leaves</h3>
+                        <div class="search">
+                            <input type="text" placeholder="Search complaints...">
+                        </div>
+                        <div class="filter">
+                            <button class="filter-btn">All</button>
+                            <button class="filter-btn">Completed</button>
+                            <button class="filter-btn">Current Leave</button>
+                        </div>
+
+                        <div id="leave-list" class="history">
+                            <div class="hist-item">
+                                <div class="top">
+                                    <h4>Mumbai</h4>
+                                    <button class="status">Completed</button>
+                                </div>
+                                <span>🏠 Home Leave</span>
+                                <span>📅 2024-01-15 to 2024-01-20</span>
+                                <span>Annual home visit</span>
+                                <p>Applied on 2024-01-10</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
-    <script src="js/slidebar.js"></script>
+    <script src="js/leave.js"></script>
 </html>

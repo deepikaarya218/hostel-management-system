@@ -36,13 +36,15 @@ async function submitStudent(){
     const name = document.getElementById("student-name").value;
     const email = document.getElementById("student-email").value;
     const roll = document.getElementById("student-ID").value;
+    const block = document.getElementById("student-block").value;
     const password = document.getElementById("student-password").value;
     const confirmPassword = document.getElementById("student-confirm-password").value;
     const room = document.getElementById("student-room").value;
-    const hostel = document.getElementById("student-block").value;
     const phone = document.getElementById("student-phone").value;
 
-    if(name === "" || email === "" || roll === "" || password === "" || confirmPassword === "" || room === "" || hostel === "" || phone === ""){
+
+
+    if(name === "" || email === "" || roll === "" || password === "" || confirmPassword === "" || room === "" || block === "" || phone === ""){
         alert("Please fill all fields");
         return;
     }
@@ -59,6 +61,17 @@ async function submitStudent(){
 
     try{
 
+        console.log({
+    name,
+    email,
+    roll,
+    block,
+    password,
+    room,
+    phone,
+    role:"student"
+});
+
         const response = await fetch("http://localhost:5000/register",{
 
             method:"POST",
@@ -71,9 +84,9 @@ async function submitStudent(){
                 name,
                 email,
                 roll,
+                block,
                 password,
                 room,
-                hostel,
                 phone,
                 role:"student"
             })
