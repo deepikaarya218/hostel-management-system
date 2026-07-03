@@ -5,35 +5,38 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/mess.css">
     </head>
-    <body onload="loadSidebar()">
+    <body>
         <!-- Include the slidebar -->
         <div class="container">
             <div id="slidebar-container"></div>
             <div class="main-content">
                 <h1>Today's Mess Menu</h1>
-                <p>Sunday, May 31, 2026</p>
+                <p id="current-date"></p>
                 
                 <div class="menu-section">
-                    <div class="menu-category">
+                    <div class="menu-category" id="breakfast-card">
                         <p>🍳</p>
                         <h2>BreakFast</h2>
                         <p>7:00 AM - 9:00 AM</p>
-                        <span class="active">Active Now</span>
+                        <span id="breakfast-status"></span>
                     </div>
-                    <div class="menu-category">
+                    <div class="menu-category" id="lunch-card">
                         <p>🍛</p>
                         <h2>Lunch</h2>
                         <p>12:00 PM - 2:00 PM</p>
+                        <span id="lunch-status"></span>
                     </div>
-                    <div class="menu-category">
+                    <div class="menu-category" id="snacks-card">
                         <p>🥪</p>
                         <h2>Snacks</h2>
                         <p>4:00 PM - 5:00 PM</p>
+                        <span id="snacks-status"></span>
                     </div>
-                    <div class="menu-category">
+                    <div class="menu-category" id="dinner-card">
                         <p>🍽️</p>
                         <h2>Dinner</h2>
                         <p>7:00 PM - 9:00 PM</p>
+                        <span id="dinner-status"></span>
                     </div>
                 </div>
 
@@ -105,6 +108,7 @@
                 <!-- EXTRA ITEMS ANYTIME -->
                 <div class="extra">
                     <h2>Extra Items (Available Anytime)</h2>
+                    <div class="extra-container">
                     <div class="extra-items">
                         <p>🥛</p>
                         <h3>Milk</h3>
@@ -135,6 +139,7 @@
                         <h4>₹15</h4>
                         <button  onclick="addToCart('Coffee', 15)" class="order-btn">Add to Cart</button>
                     </div>
+                    </div>
                 </div>
 
                 <!-- HISTORY OF MESS MENU:orders -->
@@ -142,26 +147,16 @@
                 <div class="history">
                     <h2>My Recent Orders</h2>
                     <table>
+                        <thead>
                         <tr>
                             <th>Date</th>
                             <th>Item</th>
                             <th>Price</th>
-                        </tr>
-                        <tr>
-                            <td>May 30, 2026</td>
-                            <td>Milk</td>
-                            <td>₹15</td>
-                        </tr>
-                        <tr>
-                            <td>May 29, 2026</td>
-                            <td>Cookies</td>
-                            <td>₹10</td>
-                        </tr>
-                        <tr>
-                            <td>May 28, 2026</td>
-                            <td>Fruits</td>
-                            <td>₹20</td>
-                        </tr>
+                            <th>Method</th>
+                        </tr></thead>
+                        <tbody id="history-body">
+
+                        </tbody>
                     </table>
 
                     <span class="note">Note: Order history is updated in real-time as you place orders.</span>
@@ -172,58 +167,52 @@
                 <div class="cart-summary">
                     <h2>🛒 Cart Summary</h2>
                     
-                    <div class="cart-item">
-                        <div>
-                            <h3>Milk</h3>
-                            <p>₹15 each</p>
-                        </div>
+                    <div id="cart-items"></div>
 
-                        <div class="quantity">
-                            <button>-</button>
-                            <span>1</span>
-                            <button>+</button>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <div>
-                            <h3>Biscuit Pack</h3>
-                            <p>₹15 each</p>
-                        </div>
-
-                        <div class="quantity">
-                            <button>-</button>
-                            <span>1</span>
-                            <button>+</button>
-                        </div>
-                    </div>
-                    
                     <hr>
                     
                     <div class="price-row">
                         <span>Subtotal</span>
-                        <span>₹30</span>
+                        <span id="subtotal">₹0</span>
                     </div>
 
                     <div class="price-row">
                         <span>Tax (5%)</span>
-                        <span>₹2</span>
+                        <span id="tax">₹0</span>
                     </div>
 
                     <hr>
 
                     <div class="total-row">
                         <span>Total</span>
-                        <span>₹32</span>
+                        <span id="total">₹0</span>
                     </div>
                 </div>
 
                 <button class="continue-btn">Continue Shopping</button>
 
-                <button class="payment-btn">Proceed to Payment</button>
+                <button class="payment-btn" onclick="openPayment()">Proceed to Payment</button>
+                </div>
+
+                <div id="payment-modal" class="payment-modal">
+                    <div class="payment-box">
+                        <h2>Payment Summary</h2>
+                        
+                        <div id="payment-items"></div>
+                        <h3>Total: <span id="payment-total">₹0</span></h3>
+
+                        <h4>Select Payment Method</h4>
+
+                        <label><input type="radio" name="pay" value="UPI" checked> UPI</label><br>
+                        <label><input type="radio" name="pay" value="Card"> Card</label><br>
+                        <label><input type="radio" name="pay" value="Cash"> Cash</label><br><br>
+
+                        <button onclick="closePayment()">Cancel</button>
+                        <button onclick="payNow()">Pay Now</button>
+                    </div>
                 </div>
             </div>
         </div>
     </body>
-    <script src="js/slidebar.js"></script>
+    <script src="js/mess.js"></script>
 </html>

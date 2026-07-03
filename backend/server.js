@@ -5,6 +5,7 @@ const cors = require("cors");
 const User = require("./models/User");
 const Complaint = require("./models/Complaint");
 const Leave = require("./models/Leave");
+const Payment = require("./models/Payment");
 
 const app = express();
 const PORT = 5000;
@@ -68,10 +69,14 @@ app.post("/login", async (req, res) => {
       });
     }
 
+    console.log("User from DB:", user);
+    console.log("User Name:", user.name);
+
     res.status(200).json({
       message: "Login Successful",
       role: user.role,
       userId: user._id,
+      userName: user.name,
     });
   } catch (error) {
     res.status(500).json({
@@ -79,6 +84,47 @@ app.post("/login", async (req, res) => {
     });
   }
 });
+
+// API → save payment
+app.post("/payment", async (req, res) => {
+  try {
+    const { name, items, subtotal, tax, amount, method } = req.body;
+
+    console.log("Items received:", items);
+
+    const newPayment = new Payment({
+      name,
+      items,
+      subtotal,
+      tax,
+      amount,
+      method
+    });
+
+    await newPayment.save();
+
+    const payment = await Payment.findById(newPayment._id);
+    console.log(payment);
+
+    res.json({ message: "Payment saved successfully!" });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/payment/:name", async(req, res) => {
+  try{
+    const payments = await Payment.find({
+      name : req.params.name
+    }).sort({date: -1});
+
+    res.json(payments);
+  }
+  catch(err){
+    res.status(500).json({error: err.message});
+  }
+})
 
 
 // COMPLAINT

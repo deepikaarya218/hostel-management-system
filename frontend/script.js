@@ -43,6 +43,7 @@ async function login(){
 
         // SAVE USER ID
         localStorage.setItem("userId", data.userId);
+        localStorage.setItem("userName", data.userName);
 
         if(data.role === "student"){
             window.location.href = "student/dash_student.html";
