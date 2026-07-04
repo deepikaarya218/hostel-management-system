@@ -7,6 +7,8 @@ const Complaint = require("./models/Complaint");
 const Leave = require("./models/Leave");
 const Payment = require("./models/Payment");
 
+const FeeStructure = require("./models/warden/FeeStructure");
+
 const app = express();
 const PORT = 5000;
 
@@ -212,6 +214,60 @@ app.get("/user/:id", async (req, res) => {
   }catch(error){
     res.status(500).json({
       message: error.message
+    });
+  }
+});
+
+// FEE STRUCTURE
+
+app.post("/fee-structure", async (req, res) => {
+  try{
+    console.log(req.body);
+    const {academicYear, totalFee, installments} = req.body;
+    const fee = new FeeStructure({
+      academicYear, totalFee, installments
+    });
+
+    await fee.save();
+
+    res.json({
+      message: "Fee Structure Saved Successfully"
+    });
+  }catch(err){
+    console.log(err);
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+// STUDNET FETCH FEE DATA
+
+app.get("/fee-structure", async (req, res) => {
+  try{
+    const fee = await FeeStructure.findOne().sort({createdAt: -1});
+    res.json(fee);
+  }
+  catch(err){
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+// WARDEN UPDATE FEE DATA STRUCTURE
+
+app.put("/fee-structure/:id", async (req, res) => {
+  console.log("PUT route hit");
+  try{
+    const updated = await FeeStructure.findByIdAndUpdate(
+      req.params.id, req.body, {new : true}
+    );
+    res.json(updated);
+  }
+  catch(err){
+    res.status(500).json({
+      error: err.message
     });
   }
 });

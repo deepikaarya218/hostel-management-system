@@ -11,6 +11,69 @@ function confirmPayment(){
     closeModal();
 }
 
+async function loadFeeStructure() {
+    try {
+        const res = await fetch("http://localhost:5000/fee-structure");
+        const fee = await res.json();
+
+        console.log(fee);
+
+        // Total Fee Card
+        document.getElementById("totalAmount").innerText = "₹" + fee.totalFee;
+
+        const tbody = document.getElementById("installmentTableBody");
+        tbody.innerHTML = "";
+
+        fee.installments.forEach((item, index) => {
+
+            const dueDate = new Date(item.dueDate).toLocaleDateString("en-IN");
+
+            // Filhal sab pending maan rahe hain
+            let status = "Pending";
+            let statusClass = "pending";
+
+            let paidOn = "-";
+            let method = "-";
+
+            let actionButton = `
+                <button onclick="payInstallment(${item.installmentNo})">
+                    Pay Now
+                </button>
+            `;
+
+            if(index > 0){
+                status = "Upcoming";
+                statusClass = "upcoming";
+
+                actionButton = `
+                    <button class="disabled-btn" disabled>
+                        Not Available
+                    </button>
+                `;
+            }
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>Installment ${item.installmentNo}</td>
+                    <td>₹${item.amount}</td>
+                    <td>${dueDate}</td>
+                    <td>${paidOn}</td>
+                    <td>${method}</td>
+                    <td>
+                        <span class="${statusClass}">
+                            ${status}
+                        </span>
+                    </td>
+                    <td>${actionButton}</td>
+                </tr>
+            `;
+        });
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 function showPaymentDetails() {
 
     let paymentInfo = document.getElementById("payment-info");
@@ -51,3 +114,8 @@ function showPaymentDetails() {
         `;
     }
 }
+
+window.onload = function () {
+    loadSidebar();
+    loadFeeStructure();
+};

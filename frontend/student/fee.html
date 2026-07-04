@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/fee.css">
     </head>
-    <body onload="loadSidebar()">
+    <body>
         <!-- Include the slidebar -->
         <div class="container">
             <div id="slidebar-container"></div>
@@ -75,32 +75,14 @@
                             <th>Installment</th>
                             <th>Amount</th>
                             <th>Due Date</th>
+                            <th>Paid On</th>
+                            <th>Method</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody id="installmentTableBody">
-                        <tr>
-                            <td>1st Installment</td>
-                            <td>₹50,000</td>
-                            <td>31 Jul 2024</td>
-                            <td><span class="paid">Paid</span></td>
-                            <td><button onclick="viewReceipt(1)">View Receipt</button></td>
-                        </tr>
-                        <tr>
-                            <td>2nd Installment</td>
-                            <td>₹50,000</td>
-                            <td>31 Aug 2024</td>
-                            <td><span class="pending">Pending</span></td>
-                            <td><button onclick="payInstallment(2)">Pay Now</button></td>
-                        </tr>
-                        <tr>
-                            <td>3rd Installment</td>
-                            <td>₹50,000</td>
-                            <td>30 Sep 2024</td>
-                            <td><span class="pending">Pending</span></td>
-                            <td><button onclick="payInstallment(3)">Pay Now</button></td>
-                        </tr>
+                        
                         </tbody>
                     </table>
                 </div>

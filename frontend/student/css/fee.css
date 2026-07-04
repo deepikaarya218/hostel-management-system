@@ -493,3 +493,12 @@ h3{
     transition: 0.3s;
     width: 100%;
 }
+
+.upcoming{
+    background:#dbeafe;
+    color:#1d4ed8;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
