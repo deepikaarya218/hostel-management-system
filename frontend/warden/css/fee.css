@@ -268,7 +268,7 @@ p{
 
 .bill-top{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(3,1fr);
     gap:25px;
     margin-bottom:35px;
 }

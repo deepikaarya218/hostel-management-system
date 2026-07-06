@@ -8,6 +8,7 @@ const Leave = require("./models/Leave");
 const Payment = require("./models/Payment");
 
 const FeeStructure = require("./models/warden/FeeStructure");
+const StudentBill = require("./models/warden/StudentBill");
 
 const app = express();
 const PORT = 5000;
@@ -270,6 +271,119 @@ app.put("/fee-structure/:id", async (req, res) => {
       error: err.message
     });
   }
+});
+
+// BILL MAI STUDENT NAME FETCH
+
+app.get("/students", async(req, res) => {
+  try{
+    const students = await User.find(
+      {role: 'student'},
+      {
+        name: 1,
+        room: 1,
+      }
+    );
+    res.json(students);
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+app.post("/generate-bill", async(req, res) => {
+  try{
+    const{studentId, month, previousReading, currentReading, ratePerUnit, dueDate} = req.body;
+
+    const unitConsumed = currentReading - previousReading;
+    const billAmount = unitConsumed * ratePerUnit;
+
+    const bill = new StudentBill({
+      studentId,
+      month,
+      previousReading,
+      currentReading,
+      unitConsumed,
+      ratePerUnit,
+      billAmount,
+      dueDate
+    });
+
+    await bill.save();
+
+    res.json({
+      message: "Bill Generated Successfully"
+    });
+  }
+
+  catch(err){
+    console.log(err);
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+app.get("/student-bills/:studentId", async (req, res) =>{
+  try{
+    const bills = await StudentBill.find({
+      studentId : req.params.studentId
+    }).sort({ createdAt: -1 });
+
+    res.json(bills);
+  }catch(err){
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+app.put("/update-bill/:id", async (req, res) => {
+
+    try {
+
+        const {
+            month,
+            previousReading,
+            currentReading,
+            ratePerUnit,
+            dueDate
+        } = req.body;
+
+        const unitConsumed = currentReading - previousReading;
+        const billAmount = unitConsumed * ratePerUnit;
+
+        const updatedBill = await StudentBill.findByIdAndUpdate(
+
+            req.params.id,
+
+            {
+                month,
+                previousReading,
+                currentReading,
+                ratePerUnit,
+                dueDate,
+                unitConsumed,
+                billAmount
+            },
+
+            { returnDocument: "after" }
+
+        );
+
+        res.json(updatedBill);
+
+    } catch (err) {
+
+        res.status(500).json({
+            error: err.message
+        });
+
+    }
+
 });
 
 // Server Start

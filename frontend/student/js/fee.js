@@ -115,7 +115,58 @@ function showPaymentDetails() {
     }
 }
 
+async function loadBills() {
+
+    const studentId = localStorage.getItem("userId");
+
+    try {
+
+        const res = await fetch(
+            `http://localhost:5000/student-bills/${studentId}`
+        );
+
+        const bills = await res.json();
+
+        const tbody = document.getElementById("electricityTableBody");
+
+        tbody.innerHTML = "";
+
+        bills.forEach((bill, index) => {
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${bill.month}</td>
+                    <td>${bill.previousReading}</td>
+                    <td>${bill.currentReading}</td>
+                    <td>${bill.unitConsumed}</td>
+                    <td>₹${bill.billAmount}</td>
+                    <td>${new Date(bill.dueDate).toLocaleDateString("en-IN")}</td>
+                    <td>
+                        <span class="${bill.status.toLowerCase()}">
+                            ${bill.status}
+                        </span>
+                    </td>
+                    <td>
+                        ${
+                            bill.status === "Pending"
+                            ? `<button onclick="payBill('${bill._id}')">Pay Now</button>`
+                            : `<button disabled>Paid</button>`
+                        }
+                    </td>
+                </tr>
+            `;
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+    }
+
+}
+
 window.onload = function () {
     loadSidebar();
     loadFeeStructure();
+    loadBills();
 };

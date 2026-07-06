@@ -92,6 +92,12 @@
                 <h2>Electricity Bill Generator</h2>
                 <div class="bill-top">
                     <div class="bill-field">
+                        <label>Student Name</label>
+                        <select id="name">
+                            <option>Select Student</option>
+                        </select>
+                    </div>
+                    <div class="bill-field">
                         <label>Month</label>
 
                         <select id="month">
@@ -102,17 +108,17 @@
                 
                     <div class="bill-field">
                         <label>Previous Meter Reading</label>
-                        <input type="number" id="prev-reading">
+                        <input type="number" id="prev-reading" oninput="calculateBill()">
                     </div>
 
                     <div class="bill-field">
                         <label>Current Meter Reading</label>
-                        <input type="number" id="curr-reading">
+                        <input type="number" id="curr-reading" oninput="calculateBill()">
                     </div>
 
                     <div class="bill-field">
                         <label>Rate Per Unit (₹)</label>
-                        <input type="number" id="unit">
+                        <input type="number" id="unit" oninput="calculateBill()">
                     </div>
                 </div>
 
@@ -132,9 +138,9 @@
                 </div>
 
                 <div class="buttons">
-                    <button id="save">Save Bill</button>
+                    <button id="save" onclick="generateBill()">Generate Bill</button>
                     
-                    <button id="update">Update</button>
+                    <button id="update" onclick="updateBill()">Update</button>
                     
                     <button id="reset">Reset</button>
                 </div>

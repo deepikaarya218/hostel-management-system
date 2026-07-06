@@ -159,9 +159,160 @@ async function updateFeeStructure(){
 
 }
 
+async function loadStudents(){
+    console.log("loadStudents called");
+    try{
+        const res = await fetch("http://localhost:5000/students");
+        const students = await res.json();
+        console.log(students);
+
+        const select = document.getElementById("name");
+
+        select.innerHTML = "<option value=' '>Select Student</option>";
+
+        students.forEach(student => {
+            select.innerHTML += `
+                <option value="${student._id}">
+                    ${student.name} - ${student.room}
+                </option>
+            `;
+        });
+    }catch(err){
+        console.log(err);
+    }
+}
+
+async function generateBill(){
+     if (
+        !document.getElementById("name").value ||
+        !document.getElementById("prev-reading").value ||
+        !document.getElementById("curr-reading").value ||
+        !document.getElementById("unit").value ||
+        !document.getElementById("due-date").value
+    ) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    const data = {
+        studentId: document.getElementById("name").value,
+
+        month: document.getElementById("month").value,
+
+        previousReading: Number(document.getElementById("prev-reading").value),
+
+        currentReading: Number(document.getElementById("curr-reading").value),
+
+        ratePerUnit: Number(document.getElementById("unit").value),
+
+        dueDate: document.getElementById("due-date").value
+    };
+
+    try{
+        const res = await fetch("http://localhost:5000/generate-bill", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(data)
+
+        });
+
+        const result = await res.json();
+
+        alert(result.message);
+    }catch (err) {
+        console.log(err);
+    }
+}
+
+function calculateBill() {
+
+    const previous = Number(document.getElementById("prev-reading").value) || 0;
+    const current = Number(document.getElementById("curr-reading").value) || 0;
+    const rate = Number(document.getElementById("unit").value) || 0;
+
+    const units = current - previous;
+    const amount = units * rate;
+
+    document.getElementById("unit-total").innerText = units;
+    document.getElementById("bill-total").innerHTML = "₹" + amount;
+}
+
+let billId = "";
+
+async function editBill(id){
+
+    billId = id;
+
+    const studentId = localStorage.getItem("userId");
+
+    const res = await fetch(`http://localhost:5000/student-bills/${studentId}`);
+
+    const bills = await res.json();
+
+    const bill = bills.find(b => b._id === id);
+
+    document.getElementById("month").value = bill.month;
+    document.getElementById("prev-reading").value = bill.previousReading;
+    document.getElementById("curr-reading").value = bill.currentReading;
+    document.getElementById("unit").value = bill.ratePerUnit;
+    document.getElementById("due-date").value =
+        bill.dueDate.substring(0,10);
+
+    calculateBill();
+}
+
+async function updateBill(){
+
+    const data = {
+
+        month: document.getElementById("month").value,
+
+        previousReading: Number(document.getElementById("prev-reading").value),
+
+        currentReading: Number(document.getElementById("curr-reading").value),
+
+        ratePerUnit: Number(document.getElementById("unit").value),
+
+        dueDate: document.getElementById("due-date").value
+
+    };
+
+    const res = await fetch(
+
+        `http://localhost:5000/update-bill/${billId}`,
+
+        {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(data)
+
+        }
+
+    );
+
+    const result = await res.json();
+
+    alert("Bill Updated Successfully");
+
+    loadBills();
+
+    calculateBill();
+}
+
 window.onload = function () {
     loadSidebar();
     showCurrentDate();
     loadFeeStructure();
-
+    loadStudents();
+    updateBill();
 };
