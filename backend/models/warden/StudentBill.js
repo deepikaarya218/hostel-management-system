@@ -45,7 +45,7 @@ const studentBillSchema = new mongoose.Schema({
 
     status: {
         type: String,
-        enum: ["Pending", "Paid"],
+        enum: ["Pending", "Verification", "Paid", "Rejected"],
         default: "Pending"
     },
 

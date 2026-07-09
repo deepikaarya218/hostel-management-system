@@ -9,9 +9,27 @@ const Payment = require("./models/Payment");
 
 const FeeStructure = require("./models/warden/FeeStructure");
 const StudentBill = require("./models/warden/StudentBill");
+const StudentPayment = require("./models/StudentPayment");
+
+const multer = require("multer");
+const path = require("path");
 
 const app = express();
 const PORT = 5000;
+
+const storage = multer.diskStorage({
+  destination: "./uploads",
+
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage
+});
+
+app.use("/uploads", express.static("uploads"));
 
 // Middleware
 app.use(cors());
@@ -329,12 +347,16 @@ app.post("/generate-bill", async(req, res) => {
 
 app.get("/student-bills/:studentId", async (req, res) =>{
   try{
+    console.log("Student ID from URL:", req.params.studentId);
     const bills = await StudentBill.find({
       studentId : req.params.studentId
     }).sort({ createdAt: -1 });
 
+    console.log("Bills Found:", bills);
+
     res.json(bills);
   }catch(err){
+    console.log(err);
     res.status(500).json({
       error: err.message
     });
@@ -384,6 +406,46 @@ app.put("/update-bill/:id", async (req, res) => {
 
     }
 
+});
+
+// payment veriifcation post
+
+app.post("/pay-bill",  upload.single("proof"), async(req, res) => {
+  try{
+    const{
+      billId,
+      paymentType,
+      paymentMethod,
+      amount
+    } = req.body;
+
+    const studentId = req.body.studentId;
+
+    const payment = new StudentPayment({
+      studentId,
+      billId, paymentType, amount, paymentMethod, proofImage: req.file.filename, status: "Pending"
+    });
+
+    await payment.save();
+
+    await StudentBill.findByIdAndUpdate(
+      billId,{
+        status: "Verification"
+      }
+    );
+
+    res.json({
+      message: "Payment submitted for verification."
+    });
+  }
+  catch(err){
+    console.error("PAY BILL ERROR:");
+    console.log(err);
+    res.status(500).json({
+      error: err.message,
+       stack: err.stack
+    });
+  }
 });
 
 // Server Start

@@ -1,13 +1,66 @@
-function payInstallment(no){
-    document.getElementById("pay-modal").style.display = "flex";
-}
-
 function closeModal(){
     document.getElementById("pay-modal").style.display = "none";
 }
 
-function confirmPayment(){
-    alert("Payment submitted for verification.");
+async function confirmPayment(){
+    const studentId = localStorage.getItem("userId");
+    const paymentMethod = document.querySelector('input[name="payment"]:checked');
+
+    if(!paymentMethod){
+        alert("Select Payment method");
+        return;
+    }
+
+    const receipt = document.getElementById("receipt").files[0];
+
+    if(!receipt){
+        alert("Upload payment proof");
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append(
+        "studentId",
+        studentId
+    );
+
+    formData.append(
+        "billId",
+        document.getElementById("paymentId").value
+    );
+
+    formData.append(
+        "paymentType",
+        document.getElementById("paymentType").value
+    );
+
+    formData.append(
+        "amount",
+        document.getElementById("amount-to-pay").innerText.replace("₹","")
+    );
+
+    formData.append(
+        "paymentMethod",
+        paymentMethod.value
+    );
+
+    formData.append(
+        "proof",
+        receipt
+    );
+
+    const res = await fetch(
+        "http://localhost:5000/pay-bill",
+        {
+            method:"POST",
+            body:formData
+        }
+    );
+
+    const result = await res.json();
+    console.log(result);
+    alert(result.message);
     closeModal();
 }
 
@@ -36,7 +89,7 @@ async function loadFeeStructure() {
             let method = "-";
 
             let actionButton = `
-                <button onclick="payInstallment(${item.installmentNo})">
+                <button onclick="openPaymentModal('${item._id}', ${item.amount}, 'Hostel Fee')">
                     Pay Now
                 </button>
             `;
@@ -84,7 +137,6 @@ function showPaymentDetails() {
             <div class="payment-box">
                 <h4>UPI Payment</h4>
                 <p><strong>UPI ID:</strong> hostelhub@okaxis</p>
-                <img src="../qr.jpg" alt="QR Code" width="180">
                 <p>Scan QR code or use the UPI ID above.</p>
             </div>
         `;
@@ -118,6 +170,7 @@ function showPaymentDetails() {
 async function loadBills() {
 
     const studentId = localStorage.getItem("userId");
+    console.log("Student ID:", studentId);
 
     try {
 
@@ -125,13 +178,18 @@ async function loadBills() {
             `http://localhost:5000/student-bills/${studentId}`
         );
 
+         console.log("Response:", res.status);
+
         const bills = await res.json();
+         console.log("Bills:", bills);
 
         const tbody = document.getElementById("electricityTableBody");
+        console.log("tbody:", tbody);
 
         tbody.innerHTML = "";
 
         bills.forEach((bill, index) => {
+            console.log("Adding:", bill);
 
             tbody.innerHTML += `
                 <tr>
@@ -142,15 +200,30 @@ async function loadBills() {
                     <td>₹${bill.billAmount}</td>
                     <td>${new Date(bill.dueDate).toLocaleDateString("en-IN")}</td>
                     <td>
-                        <span class="${bill.status.toLowerCase()}">
+                        <span class="${bill.status.trim().toLowerCase()}">
                             ${bill.status}
                         </span>
                     </td>
                     <td>
                         ${
                             bill.status === "Pending"
-                            ? `<button onclick="payBill('${bill._id}')">Pay Now</button>`
-                            : `<button disabled>Paid</button>`
+        ? `<button onclick="openPaymentModal('${bill._id}', ${bill.billAmount}, 'Electricity Bill')">
+                Pay Now
+           </button>`
+
+        : bill.status === "Verification"
+        ? `<button disabled>
+                Under Verification
+           </button>`
+
+        : bill.status === "Rejected"
+        ? `<button onclick="openPaymentModal('${bill._id}', ${bill.billAmount}, 'Electricity Bill')">
+                Pay Again
+           </button>`
+
+        : `<button disabled>
+                Paid
+           </button>`
                         }
                     </td>
                 </tr>
@@ -163,6 +236,23 @@ async function loadBills() {
 
     }
 
+}
+
+function openPaymentModal(id, amount, type){
+    document.getElementById("paymentId").value = id;
+    document.getElementById("paymentType").value = type;
+    document.getElementById("amount-to-pay").innerText = "₹" + amount;
+    document.getElementById("paymentTitle").innerText =
+        type + " Payment";
+
+    document.getElementById("receipt").value = "";
+
+    document.querySelectorAll('input[name="payment"]').forEach(r => {
+        r.checked = false;
+    });
+
+    document.getElementById("payment-info").innerHTML = "";
+    document.getElementById("pay-modal").style.display = "flex";
 }
 
 window.onload = function () {

@@ -502,3 +502,12 @@ h3{
     font-size: 14px;
     font-weight: 500;
 }
+
+.verfication{
+    background:#fff3cd;
+    color:#856404;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
