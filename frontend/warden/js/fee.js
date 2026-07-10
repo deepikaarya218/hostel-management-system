@@ -309,10 +309,69 @@ async function updateBill(){
     calculateBill();
 }
 
+async function loadPayments(){
+    const res = await fetch("http://localhost:5000/warden/payment");
+
+    const payments = await res.json();
+
+    const tbody = document.getElementById("payment-verify-table");
+
+    tbody.innerHTML = "";
+
+    payments.forEach(payment => {
+        tbody.innerHTML += `
+        <tr>
+        <td>${payment.studentId?.username || "-"}</td>
+        <td>${payment.paymentType}</td>
+        <td>${payment.amount}</td>
+        <td>${payment.paymentMethod}</td>
+        
+        <td>
+        <a href= "http://localhost:5000/uploads/${payment.proofImage}" target="_blank">
+        View </a>
+        </td>
+        
+        <td>${payment.paidOn ? new Date(payment.paidOn).toLocaleDateString("en-IN"): "-"}</td>
+
+            <td>${payment.status}</td>
+            <td>
+                <button onclick="approvePayment('${payment._id}')">
+                    Approve
+                </button>
+
+                <button onclick="rejectPayment('${payment._id}')">
+                    Reject
+                </button>
+
+            </td>
+
+        </tr>`;
+    });
+}
+
+async function approvePayment(id){
+    await fetch (`http://localhost:5000/warden/payment/${id}/approve`,{
+        method:"PUT"
+    });
+
+    loadPayments();
+}
+
+async function rejectPayment(id){
+
+    await fetch(`http://localhost:5000/warden/payment/${id}/reject`,{
+        method:"PUT"
+    });
+
+    loadPayments();
+
+}
+
 window.onload = function () {
     loadSidebar();
     showCurrentDate();
     loadFeeStructure();
     loadStudents();
     updateBill();
+    loadPayments();
 };

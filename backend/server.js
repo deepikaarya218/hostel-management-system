@@ -410,9 +410,10 @@ app.put("/update-bill/:id", async (req, res) => {
 
 // payment veriifcation post
 
-app.post("/pay-bill",  upload.single("proof"), async(req, res) => {
-  try{
-    const{
+app.post("/pay-bill", upload.single("proof"), async (req, res) => {
+  try {
+
+    const {
       billId,
       paymentType,
       paymentMethod,
@@ -421,30 +422,140 @@ app.post("/pay-bill",  upload.single("proof"), async(req, res) => {
 
     const studentId = req.body.studentId;
 
-    const payment = new StudentPayment({
+    // Database me existing payment dhoondo
+    let payment = await StudentPayment.findOne({
       studentId,
-      billId, paymentType, amount, paymentMethod, proofImage: req.file.filename, status: "Pending"
+      billId,
+      paymentType
     });
 
-    await payment.save();
+    if (payment) {
 
-    await StudentBill.findByIdAndUpdate(
-      billId,{
+      // Existing record update karo
+      payment.paymentMethod = paymentMethod;
+      payment.amount = amount;
+      payment.proofImage = req.file.filename;
+      payment.status = "Verification";
+      payment.paidOn = new Date();
+
+      await payment.save();
+
+    } else {
+
+      // Pehli baar payment ho rahi hai
+      payment = new StudentPayment({
+        studentId,
+        billId,
+        paymentType,
+        amount,
+        paymentMethod,
+        proofImage: req.file.filename,
         status: "Verification"
-      }
-    );
+      });
+
+      await payment.save();
+
+    }
+
+    // Sirf Electricity Bill ke liye
+    if (paymentType === "Electricity Bill") {
+      await StudentBill.findByIdAndUpdate(billId, {
+        status: "Verification"
+      });
+    }
 
     res.json({
       message: "Payment submitted for verification."
     });
-  }
-  catch(err){
-    console.error("PAY BILL ERROR:");
+
+  } catch (err) {
     console.log(err);
     res.status(500).json({
-      error: err.message,
-       stack: err.stack
+      error: err.message
     });
+  }
+});
+
+app.get("/student-payments/:studentId", async(req, res) => {
+  try{
+    const payments = await StudentPayment.find({
+            studentId: req.params.studentId,
+            paymentType: "Hostel Fee"
+        });
+
+        res.json(payments);
+  }catch(err){
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+// WARDEN FETCH VERIFICATION DATA
+
+app.get("/warden/payment", async(req, res) => {
+  try{
+    const payments = await StudentPayment.find({
+      status: "Verification"
+    })
+    .populate("studentId", "username email enrollno branch year")
+    .sort({createdAt:-1});
+
+    res.json(payments);
+  }catch(err){
+    console.log(err);
+    res.status(500).json({
+      message: "Server error"
+    });
+  }
+});
+
+// WARDEN APPROVE STUDENT PAYMENT
+
+app.put("/warden/payment/:id/approve", async(req, res) => {
+  try{
+    const payment = await StudentPayment.findById(req.params.id);
+
+    if(!payment){
+      return res.status(404).json({message: "Payment not found"});
+    }
+    payment.status = "Approved";
+    await payment.save();
+
+    await StudentBill.findByIdAndUpdate(payment.billId,{
+      status: "Paid"
+    });
+
+    res.json({message: "Payment Approved"});
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({message: "Server Error"});
+  }
+});
+
+
+// WARDEN REJECT STUDENT PAYMENT
+
+app.put("/warden/payment/:id/reject", async(req, res) => {
+  try{
+    const payment = await StudentPayment.findById(req.params.id);
+
+    if(!payment){
+      return res.status(404).json({message: "Payment not found"});
+    }
+    payment.status = "Rejected";
+    await payment.save();
+
+    await StudentBill.findByIdAndUpdate(payment.billId,{
+      status: "Rejected"
+    });
+
+    res.json({message: "Payment Rejected"});
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({message: "Server Error"});
   }
 });
 

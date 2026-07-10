@@ -10,6 +10,7 @@ const studentPaymentSchema = new mongoose.Schema({
 
     billId: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: "StudentBill",
         required: true
     },
 
@@ -37,8 +38,8 @@ const studentPaymentSchema = new mongoose.Schema({
 
     status: {
         type: String,
-        enum: ["Pending", "Approved", "Rejected"],
-        default: "Pending"
+        enum: ["Verification", "Approved", "Rejected"],
+        default: "Verification"
     },
 
     paidOn: {

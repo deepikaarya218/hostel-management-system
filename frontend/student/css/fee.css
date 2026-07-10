@@ -503,9 +503,18 @@ h3{
     font-weight: 500;
 }
 
-.verfication{
+.verification{
     background:#fff3cd;
     color:#856404;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.rejected{
+    background: #f8d7da;
+    color: #b71c1c;
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 14px;

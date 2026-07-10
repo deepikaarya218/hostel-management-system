@@ -66,10 +66,22 @@ async function confirmPayment(){
 
 async function loadFeeStructure() {
     try {
-        const res = await fetch("http://localhost:5000/fee-structure");
-        const fee = await res.json();
+        const studentId = localStorage.getItem("userId");
+
+        const feeRes = await fetch("http://localhost:5000/fee-structure");
+        console.log("Fee Response:", feeRes.status);
+        const fee = await feeRes.json();
+        console.log("Fee:", fee);
 
         console.log(fee);
+
+        const paymentRes = await fetch(
+            `http://localhost:5000/student-payments/${studentId}`
+        );
+        console.log("Payment Response:", paymentRes.status);
+
+        const payments = await paymentRes.json();
+        console.log("Payment:", payments);
 
         // Total Fee Card
         document.getElementById("totalAmount").innerText = "₹" + fee.totalFee;
@@ -94,7 +106,55 @@ async function loadFeeStructure() {
                 </button>
             `;
 
-            if(index > 0){
+            console.log("Installment ID:", item._id.toString());
+
+    payments.forEach(p => {
+        console.log(
+            "Payment billId:",
+            p.billId.toString(),
+            "Status:",
+            p.status
+        );
+    });
+
+            const payment = payments.find(
+                p => p.billId.toString() === item._id.toString()
+            );
+            console.log("FOUND PAYMENT:", payment);
+
+            if(payment){
+                console.log("Installment", item.installmentNo, "Status:", payment.status);
+                status = payment.status;
+                statusClass = payment.status.toLowerCase();
+
+                paidOn = payment.paidOn ? new Date(payment.paidOn).toLocaleDateString("en-IN"): "-";
+
+                method = payment.paymentMethod;
+
+                if(payment.status === "Verification"){
+                    actionButton = `<button disabled>Under Verification</button>`;
+                }
+                else if(payment.status == "Approved"){
+                    status = "Paid";
+                    statusClass = "paid";
+
+                    actionButton = `
+                        <button disabled>
+                            Paid
+                        </button>
+                    `;
+                }
+                else if (payment.status === "Rejected") {
+
+                    actionButton = `
+                        <button onclick="openPaymentModal('${item._id}', ${item.amount}, 'Hostel Fee')">
+                            Pay Again
+                        </button>
+                    `;
+                }
+            }
+
+            else if(index > 0){
                 status = "Upcoming";
                 statusClass = "upcoming";
 
@@ -124,46 +184,6 @@ async function loadFeeStructure() {
 
     } catch (err) {
         console.log(err);
-    }
-}
-
-function showPaymentDetails() {
-
-    let paymentInfo = document.getElementById("payment-info");
-
-    if(document.getElementById("upi").checked){
-
-        paymentInfo.innerHTML = `
-            <div class="payment-box">
-                <h4>UPI Payment</h4>
-                <p><strong>UPI ID:</strong> hostelhub@okaxis</p>
-                <p>Scan QR code or use the UPI ID above.</p>
-            </div>
-        `;
-    }
-
-    else if(document.getElementById("bank").checked){
-
-        paymentInfo.innerHTML = `
-            <div class="payment-box">
-                <h4>Bank Transfer Details</h4>
-                <p><strong>Account Name:</strong> HostelHub</p>
-                <p><strong>Account Number:</strong> 123456789012</p>
-                <p><strong>IFSC:</strong> SBIN0001234</p>
-                <p><strong>Bank:</strong> State Bank of India</p>
-            </div>
-        `;
-    }
-
-    else if(document.getElementById("cash").checked){
-
-        paymentInfo.innerHTML = `
-            <div class="payment-box">
-                <h4>Cash Deposit</h4>
-                <p>Please visit the hostel office counter and deposit the amount.</p>
-                <p>After payment, upload the receipt or payment proof for verification.</p>
-            </div>
-        `;
     }
 }
 
@@ -236,6 +256,46 @@ async function loadBills() {
 
     }
 
+}
+
+function showPaymentDetails() {
+
+    let paymentInfo = document.getElementById("payment-info");
+
+    if(document.getElementById("upi").checked){
+
+        paymentInfo.innerHTML = `
+            <div class="payment-box">
+                <h4>UPI Payment</h4>
+                <p><strong>UPI ID:</strong> hostelhub@okaxis</p>
+                <p>Scan QR code or use the UPI ID above.</p>
+            </div>
+        `;
+    }
+
+    else if(document.getElementById("bank").checked){
+
+        paymentInfo.innerHTML = `
+            <div class="payment-box">
+                <h4>Bank Transfer Details</h4>
+                <p><strong>Account Name:</strong> HostelHub</p>
+                <p><strong>Account Number:</strong> 123456789012</p>
+                <p><strong>IFSC:</strong> SBIN0001234</p>
+                <p><strong>Bank:</strong> State Bank of India</p>
+            </div>
+        `;
+    }
+
+    else if(document.getElementById("cash").checked){
+
+        paymentInfo.innerHTML = `
+            <div class="payment-box">
+                <h4>Cash Deposit</h4>
+                <p>Please visit the hostel office counter and deposit the amount.</p>
+                <p>After payment, upload the receipt or payment proof for verification.</p>
+            </div>
+        `;
+    }
 }
 
 function openPaymentModal(id, amount, type){
