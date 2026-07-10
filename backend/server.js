@@ -491,6 +491,20 @@ app.get("/student-payments/:studentId", async(req, res) => {
   }
 });
 
+app.get("/student-payment-history/:studentId", async(req, res) => {
+  try{
+    const payments = await StudentPayment.find({
+      studentId: req.params.studentId,
+    }).sort({paidOn: -1});
+
+    res.json(payments);
+  }catch(err){
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
 // WARDEN FETCH VERIFICATION DATA
 
 app.get("/warden/payment", async(req, res) => {

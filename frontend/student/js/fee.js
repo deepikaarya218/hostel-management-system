@@ -315,8 +315,77 @@ function openPaymentModal(id, amount, type){
     document.getElementById("pay-modal").style.display = "flex";
 }
 
+let paymentHistory = [];
+
+async function loadHistory(){
+    const studentId = localStorage.getItem("userId");
+
+    const res = await fetch(
+        `http://localhost:5000/student-payment-history/${studentId}`
+    );
+    console.log(res.status);
+
+    paymentHistory = await res.json();
+    console.log(paymentHistory);
+
+    renderHistory(paymentHistory);
+}
+
+function renderHistory(data){
+    const tbody = document.getElementById("historyTableBody");
+    tbody.innerHTML = "";
+
+    data.forEach(payment => {
+        tbody.innerHTML += `
+            <tr>
+
+                <td>TXN-${payment._id.slice(-6).toUpperCase()}</td>
+
+                <td>${new Date(payment.paidOn).toLocaleDateString("en-IN")}</td>
+
+                <td>${payment.paymentType}</td>
+
+                <td>₹${payment.amount}</td>
+
+                <td>
+                    <span class="${payment.status.toLowerCase()}">
+                        ${payment.status}
+                    </span>
+                </td>
+
+            </tr>`;
+    });
+}
+
+function filterHistory(){
+    const type = document.getElementById("filter-type").value;
+    const status = document.getElementById("filter-status").value;
+
+    let filtered = paymentHistory;
+
+    if(type != "all"){
+        filtered = filtered.filter(payment => {
+            if(type === "installment"){
+                return payment.paymentType === "Hostel Fee";
+            }
+            if(type === "electricity"){
+                return payment.paymentType === "Electricity Bill";
+            }
+        });
+    }
+
+    if(status != "all"){
+        filtered = filtered.filter(payment =>
+            payment.status.trim().toLowerCase() === status.trim().toLowerCase()
+        );
+    }
+
+    renderHistory(filtered);
+}
+
 window.onload = function () {
     loadSidebar();
     loadFeeStructure();
     loadBills();
+    loadHistory();
 };
