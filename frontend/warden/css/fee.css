@@ -697,3 +697,375 @@ p{
     background:#4338ca;
 
 }
+
+/* ================= MODAL ================= */
+
+
+.modal{
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+
+    width: 75%;
+    max-width: 900px;
+    min-width: 700px;
+
+    max-height: 85vh;
+    overflow-y: auto;
+
+    background: #fff;
+    border-radius: 16px;
+
+    padding: 24px 30px;
+
+    box-shadow: 0 15px 45px rgba(0,0,0,.25);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: .3s ease;
+
+    z-index: 1001;
+}
+
+.modal.show{
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-overlay{
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,.45);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: .3s;
+
+    z-index: 1000;
+}
+
+.modal-overlay.show{
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ================= STUDENT DETAILS ================= */
+
+.detail{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:35px;
+}
+
+.detail-item{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+    padding:20px;
+}
+
+.detail-item span{
+    display:block;
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:8px;
+    font-weight:500;
+}
+
+.detail-item h4{
+    font-size:18px;
+    color:#0f172a;
+    font-weight:600;
+}
+
+/* ================= SECTION ================= */
+
+.hostelFee,
+.electricitybill{
+    margin-top:35px;
+}
+
+.hostelFee h3,
+.electricitybill h3{
+    font-size:22px;
+    color:#1e293b;
+    margin-bottom:18px;
+}
+
+/* ================= TABLE ================= */
+
+.hostelFee {
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.hostelFee{
+    margin-top: 30px;
+}
+
+.hostelFee h3{
+    margin-bottom: 20px;
+    color: #0f172a;
+    margin-left: 0;
+}
+
+.hostelFee table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.hostelFee th{
+    background: #f8fafc;
+    color: #334155;
+    text-align: left;
+    padding: 18px 24px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.hostelFee td{
+    padding: 18px 24px;
+    border-top: 1px solid #e5e7eb;
+    color: #1e293b;
+    font-size: 15px;
+}
+
+.hostelFee tr:hover{
+    background: #f8fafc;
+}
+
+.electricitybill {
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.electricitybill{
+    margin-top: 30px;
+}
+
+.electricitybill h3{
+    margin-bottom: 20px;
+    color: #0f172a;
+    margin-left: 0;
+}
+
+.electricitybill table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.electricitybill th{
+    background: #f8fafc;
+    color: #334155;
+    text-align: left;
+    padding: 18px 24px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.electricitybill td{
+    padding: 18px 24px;
+    border-top: 1px solid #e5e7eb;
+    color: #1e293b;
+    font-size: 15px;
+}
+
+.electricitybill tr:hover{
+    background: #f8fafc;
+}
+
+/* ================= STATUS ================= */
+
+.paid{
+    background:#dcfce7;
+    color:#15803d;
+    padding:7px 16px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.approved{
+    background: #dcfce7;
+    color: #15803d;
+    padding:7px 16px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.verification{
+    background:#fef3c7;
+    color:#b45309;
+    padding:7px 16px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.pending{
+    background:#e2e8f0;
+    color:#475569;
+    padding:7px 16px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.upcoming{
+    background:#dbeafe;
+    color:#2563eb;
+    padding:7px 16px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.rejected{
+    background:#fee2e2;
+    color:#dc2626;
+    padding:7px 16px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+/* ================= SUMMARY ================= */
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:18px;
+    margin-top:40px;
+}
+
+.sum-item{
+    background:#fff;
+    border-radius:14px;
+    padding:22px;
+    text-align:center;
+    border:1px solid #e2e8f0;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
+}
+
+.sum-item h4{
+    font-size:14px;
+    color:#64748b;
+    margin-bottom:10px;
+}
+
+.sum-item h3{
+    font-size:26px;
+    color:#0f172a;
+    font-weight:700;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+    .detail{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .detail{
+        grid-template-columns:1fr;
+    }
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+
+    .modal{
+        padding:20px;
+    }
+
+    .hostelFee table,
+    .electricitybill table{
+        display:block;
+        overflow-x:auto;
+    }
+
+}
+
+/* ================= MODAL HEADER ================= */
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:20px;
+    margin-bottom:30px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.modal-header h2{
+    font-size:28px;
+    font-weight:700;
+    color:#1e293b;
+    margin:0;
+    letter-spacing:.3px;
+}
+
+/* ================= CLOSE BUTTON ================= */
+
+.close-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:#f1f5f9;
+    color:#475569;
+    font-size:24px;
+    font-weight:600;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:all .25s ease;
+}
+
+.close-btn:hover{
+    background:#ef4444;
+    color:#fff;
+    transform:rotate(90deg);
+}
+
+.view-btn{
+    background: linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:10px 18px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .25s ease;
+}

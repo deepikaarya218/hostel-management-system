@@ -266,49 +266,6 @@ async function editBill(id){
     calculateBill();
 }
 
-async function updateBill(){
-
-    const data = {
-
-        month: document.getElementById("month").value,
-
-        previousReading: Number(document.getElementById("prev-reading").value),
-
-        currentReading: Number(document.getElementById("curr-reading").value),
-
-        ratePerUnit: Number(document.getElementById("unit").value),
-
-        dueDate: document.getElementById("due-date").value
-
-    };
-
-    const res = await fetch(
-
-        `http://localhost:5000/update-bill/${billId}`,
-
-        {
-
-            method: "PUT",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify(data)
-
-        }
-
-    );
-
-    const result = await res.json();
-
-    alert("Bill Updated Successfully");
-
-    loadBills();
-
-    calculateBill();
-}
-
 async function loadPayments(){
     const res = await fetch("http://localhost:5000/warden/payment");
 
@@ -367,11 +324,257 @@ async function rejectPayment(id){
 
 }
 
+let studentPayments = [];
+
+async function loadStudentPayments(){
+    const res = await fetch(
+        "http://localhost:5000/warden/student-payment-summary"
+    );
+
+    const students = await res.json();
+    studentPayments = students;
+
+    renderTable(studentPayments);
+}
+
+function filterTable(){
+    const search = document.getElementById("search-name").value.toLowerCase();
+    const status = document.getElementById("filter").value;
+
+    const filtered = studentPayments.filter(student => {
+        const matchSearch = 
+           student.studentName.toLowerCase().includes(search) ||
+           student.rollNo.toLowerCase().includes(search) ||
+           student.roomNo.toLowerCase().includes(search);
+
+        let matchStatus = true;
+        if(status == "paid"){
+            matchStatus = student.dueAmount === 0;
+        }
+        if(status === "pending"){
+            matchStatus = student.dueAmount > 0;
+        }
+
+        return matchSearch && matchStatus;
+    });
+    renderTable(filtered);
+}
+
+function renderTable(data) {
+
+    const tbody = document.getElementById("payment-status-body");
+
+    tbody.innerHTML = "";
+
+    data.forEach(student => {
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${student.studentName}</td>
+                <td>${student.rollNo}</td>
+                <td>${student.roomNo}</td>
+                <td>${student.hostelFee} Paid</td>
+                <td>${student.electricity} Paid</td>
+                <td>₹${student.dueAmount}</td>
+
+                <td>
+                    ${
+                        student.lastPayment
+                        ? `₹${student.lastPayment.amount}<br>
+                           ${student.lastPayment.paymentType}<br>
+                           ${new Date(student.lastPayment.paidOn).toLocaleDateString("en-IN")}`
+                        : "-"
+                    }
+                </td>
+
+                <td>
+                    <button class="view-btn" onclick="viewDetails('${student.studentId}')">
+                        View Details
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function openModal(){
+    document.getElementById("studentDetailModal").classList.add("show");
+    // document.getElementById("modaloverlay").classList.add("show");
+}
+
+function closeModal(){
+
+    document
+    .getElementById("studentDetailModal")
+    .classList.remove("show");
+
+    document
+    .getElementById("modalOverlay")
+    .classList.remove("show");
+
+}
+
+function viewDetails(studentId){
+
+    console.log(studentId);
+
+    openModal();
+
+}
+
+async function viewDetails(studentId){
+
+    openModal();
+
+    const res = await fetch(
+        `http://localhost:5000/warden/student-payment-details/${studentId}`
+    );
+
+    const data = await res.json();
+
+    console.log(data);
+
+    fillStudent(data);
+    fillHostelFee(data);
+    fillBills(data);
+    fillSummary(data);
+
+}
+
+function fillStudent(data){
+
+    document.getElementById("Studentname").innerText =
+        data.student.name;
+
+    document.getElementById("rollNo").innerText =
+        data.student.roll;
+
+    document.getElementById("roomNo").innerText =
+        data.student.room;
+
+    document.getElementById("contactNo").innerText =
+        data.student.phone;
+
+}
+
+function fillHostelFee(data){
+
+    const tbody =
+    document.getElementById("hostel-fee-status");
+
+    tbody.innerHTML = "";
+
+    data.feeStructure.installments.forEach(item=>{
+
+        const payment = data.hostelPayments.find(
+            p => p.billId.toString() === item._id.toString()
+        );
+
+        let status = "Pending";
+
+        if(payment)
+            status = payment.status;
+
+        tbody.innerHTML += `
+        <tr>
+
+            <td>Installment ${item.installmentNo}</td>
+
+            <td>₹${item.amount}</td>
+
+            <td>${new Date(item.dueDate)
+                .toLocaleDateString("en-IN")}</td>
+
+            <td>
+                <span class="${status.toLowerCase()}">
+                    ${status}
+                </span>
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+}
+
+function fillBills(data){
+
+    const tbody =
+    document.getElementById("hostel-bill-status");
+
+    tbody.innerHTML = "";
+
+    data.bills.forEach(bill=>{
+
+        tbody.innerHTML += `
+
+        <tr>
+
+            <td>${bill.month}</td>
+
+            <td>${bill.unitConsumed}</td>
+
+            <td>₹${bill.billAmount}</td>
+
+            <td>
+                <span class="${bill.status.toLowerCase()}">
+                    ${bill.status}
+                </span>
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+function fillSummary(data){
+
+    const totalFee =
+        data.feeStructure.totalFee;
+
+    const hostelPaid =
+        data.hostelPayments
+        .filter(p=>p.status==="Approved")
+        .reduce((sum,p)=>sum+p.amount,0);
+
+    const totalBill =
+        data.bills.reduce((sum,b)=>sum+b.billAmount,0);
+
+    const billPaid =
+        data.bills
+        .filter(b=>b.status==="Paid")
+        .reduce((sum,b)=>sum+b.billAmount,0);
+
+    const pending =
+        (totalFee-hostelPaid)
+        +(totalBill-billPaid);
+
+    document.getElementById("modal-total-fee").innerText =
+        "₹"+totalFee;
+
+    document.getElementById("paid-fee").innerText =
+        "₹"+hostelPaid;
+
+    document.getElementById("total-bill").innerText =
+        "₹"+totalBill;
+
+    document.getElementById("paid-bill").innerText =
+        "₹"+billPaid;
+
+    document.getElementById("total-pending").innerText =
+        "₹"+pending;
+
+}
+
 window.onload = function () {
     loadSidebar();
     showCurrentDate();
     loadFeeStructure();
     loadStudents();
-    updateBill();
     loadPayments();
+    loadStudentPayments();
 };

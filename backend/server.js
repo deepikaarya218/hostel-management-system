@@ -573,6 +573,103 @@ app.put("/warden/payment/:id/reject", async(req, res) => {
   }
 });
 
+// WARDEN FULL DETAIL TABLE
+
+app.get("/warden/student-payment-summary", async (req, res) => {
+  try{
+    const feeStructure = await FeeStructure.findOne();
+    const totalInstallments = feeStructure.installments.length;
+
+    const students = await User.find({ role: "student" });
+
+    const result = [];
+
+    for(const student of students){
+      const hostelPayments = await StudentPayment.find({
+        studentId: student._id,
+        paymentType: "Hostel Fee"
+      });
+
+      const hostelPaid = hostelPayments.filter(
+        p => p.status === "Approved"
+      ).length;
+
+      const bills = await StudentBill.find({
+          studentId: student._id
+      });
+
+      const billPaid = bills.filter(
+          b => b.status === "Paid"
+      ).length;
+
+      let dueAmount = 0;
+
+      const hostelPaidAmount = hostelPayments.filter(p => p.status === "Approved")
+      .reduce((sum, p) => sum + p.amount, 0);
+
+      const hostelDue = feeStructure.totalFee - hostelPaidAmount;
+
+      const electricityDue = bills
+        .filter(b => b.status !== "Paid")
+        .reduce((sum, b) => sum + b.billAmount, 0);
+
+      dueAmount = hostelDue + electricityDue;
+
+      const lastPayment = await StudentPayment.findOne({
+        studentId: student._id
+      }).sort({paidOn: -1});
+
+      result.push({
+        studentId: student._id,
+        studentName: student.name,
+        rollNo: student.roll,
+        roomNo: student.room,
+        hostelFee: `${hostelPaid}/${totalInstallments}`,
+        electricity: `${billPaid}/${bills.length}`,
+        dueAmount,
+        lastPayment
+      });
+    }
+    res.json(result);
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+app.get("/warden/student-payment-details/:studentId", async (req, res) => {
+    try {
+
+        const studentId = req.params.studentId;
+
+        const student = await User.findById(studentId);
+
+        const feeStructure = await FeeStructure.findOne();
+
+        const hostelPayments = await StudentPayment.find({
+            studentId,
+            paymentType: "Hostel Fee"
+        });
+
+        const bills = await StudentBill.find({ studentId });
+
+        res.json({
+            student,
+            feeStructure,
+            hostelPayments,
+            bills
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            error: err.message
+        });
+    }
+});
+
 // Server Start
 app.listen(PORT, () => {
   console.log(`Server Running on Port ${PORT}`);

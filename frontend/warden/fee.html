@@ -171,14 +171,13 @@
                 <h2>Student Payment Status</h2>
                 <div class="history-top">
                     <div class="field">
-                        <input type="text" id="search-name" placeholder="Search by name or ID">
+                        <input type="text" id="search-name" onkeyup="filterTable()" placeholder="Search by name or ID">
                     </div>
                     <div class="field">
-                        <select id="filter">
+                        <select id="filter" onchange="filterTable()">
                             <option value="">All Status</option>
                             <option value="paid">Paid</option>
                             <option value="pending">Pending</option>
-                            <option value="partial">Partial</option>
                         </select>
                     </div>
                 </div>
@@ -198,6 +197,88 @@
 
                     </tbody>
                 </table>
+            </div>
+
+            <div class="modal-overlay" id="modalOverlay"></div>
+
+            <div class="modal" id="studentDetailModal">
+
+                <div class="modal-header">
+                    <h2>Student Payment Details</h2>
+                    <button class="close-btn" onclick="closeModal()">&times;</button>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-item">
+                        <span>Student Name</span>
+                        <h4 id="Studentname"></h4>
+                    </div>
+                    <div class="detail-item">
+                        <span>Enrollment No.</span>
+                        <h4 id="rollNo"></h4>
+                    </div>
+                    <div class="detail-item">
+                        <span>Room No.</span>
+                        <h4 id="roomNo"></h4>
+                    </div>
+                    <div class="detail-item">
+                        <span>Contact No.</span>
+                        <h4 id="contactNo"></h4>
+                    </div>
+                </div>
+
+                <div class="hostelFee">
+                    <h3>Hostel Fee</h3>
+                    <table>
+                        <thead>
+                            <th>Intsallment No.</th>
+                            <th>Amount</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                        </thead>
+                        <tbody id="hostel-fee-status">
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="electricitybill">
+                    <h3>Electricity Bill (12 Months)</h3>
+                    <table>
+                        <thead>
+                            <th>Month</th>
+                            <th>Unit</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </thead>
+                        <tbody id="hostel-bill-status">
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="summary">
+                    <div class="sum-item">
+                        <h4>Total Hostel Fee</h4>
+                        <h3 id="modal-total-fee"></h3>
+                    </div>
+                    <div class="sum-item">
+                        <h4>Hostel Fee Paid</h4>
+                        <h3 id="paid-fee"></h3>
+                    </div>
+                    <div class="sum-item">
+                        <h4>Total Electricity Bill</h4>
+                        <h3 id="total-bill"></h3>
+                    </div>
+                    <div class="sum-item">
+                        <h4>Electricity Bill Paid</h4>
+                        <h3 id="paid-bill"></h3>
+                    </div>
+                    <div class="sum-item">
+                        <h4>Total Pending</h4>
+                        <h3 id="total-pending"></h3>
+                    </div>
+                </div>
             </div>
             
             <div class="review">
