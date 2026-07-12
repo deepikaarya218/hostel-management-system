@@ -10,6 +10,7 @@ const Payment = require("./models/Payment");
 const FeeStructure = require("./models/warden/FeeStructure");
 const StudentBill = require("./models/warden/StudentBill");
 const StudentPayment = require("./models/StudentPayment");
+const Notification = require("./models/warden/Notification");
 
 const multer = require("multer");
 const path = require("path");
@@ -793,6 +794,86 @@ app.get("/warden/pending-payment-summary", async (req, res) => {
     } catch (err) {
 
         console.log(err);
+
+        res.status(500).json({
+            error: err.message
+        });
+
+    }
+});
+
+// warden send notification
+
+app.post("/warden/send-reminder/:studentId", async(req, res) => {
+  try{
+    const studentId = req.params.studentId;
+    const feeStructure = await FeeStructure.findOne();
+    const hostelPayments = await StudentPayment.find({
+      studentId,
+      paymentType: "Hostel Fee",
+      status: "Approved"
+    });
+
+    const pendingBills = await StudentBill.find({
+      studentId,
+      status: "Pending"
+    });
+
+     if (hostelPayments.length < feeStructure.installments.length) {
+
+            const nextInstallment =
+                feeStructure.installments[hostelPayments.length];
+
+            await Notification.create({
+
+                studentId,
+
+                title: "Upcoming Hostel Fee Payment",
+
+                message: `Installment #${nextInstallment.installmentNo} of ₹${nextInstallment.amount} is due on ${new Date(nextInstallment.dueDate).toLocaleDateString("en-IN")}. Please complete the payment before the due date.`
+
+            });
+
+        }
+
+        // Electricity Notifications
+        for (const bill of pendingBills) {
+
+            await Notification.create({
+
+                studentId,
+
+                title: "Pending Electricity Bill",
+
+                message: `Your ${bill.month} electricity bill of ₹${bill.billAmount} is pending. Kindly pay it before ${new Date(bill.dueDate).toLocaleDateString("en-IN")}.`
+
+            });
+
+        }
+
+        res.json({
+            message: "Reminder Sent Successfully."
+        });
+
+  }catch(err){
+    res.status(500).json({
+      error: err.message
+    })
+  }
+})
+
+// student receive notification
+
+app.get("/student-notifications/:studentId", async (req, res) => {
+    try {
+
+        const notifications = await Notification.find({
+            studentId: req.params.studentId
+        }).sort({ createdAt: -1 });
+
+        res.json(notifications);
+
+    } catch (err) {
 
         res.status(500).json({
             error: err.message

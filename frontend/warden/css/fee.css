@@ -1058,7 +1058,7 @@ p{
     transform:rotate(90deg);
 }
 
-.view-btn{
+.view-btn, .notify-btn{
     background: linear-gradient(135deg,#2563eb,#1d4ed8);
     color:#fff;
     border:none;

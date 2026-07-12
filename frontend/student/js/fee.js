@@ -383,9 +383,51 @@ function filterHistory(){
     renderHistory(filtered);
 }
 
+async function loadNotifications(){
+
+    const studentId = localStorage.getItem("userId");
+
+    const res = await fetch(
+        `http://localhost:5000/student-notifications/${studentId}`
+    );
+
+    const notifications = await res.json();
+
+    document.getElementById("upcomingInstallment").style.display = "none";
+    document.getElementById("pendingElectricity").style.display = "none";
+
+    notifications.forEach(n=>{
+
+        if(n.title.includes("Hostel")){
+
+            document.getElementById("upcomingInstallment").style.display="block";
+
+            document.getElementById("upcomingInstallment").innerHTML=`
+                <h4>${n.title}</h4>
+                <p>${n.message}</p>
+            `;
+
+        }
+
+        else{
+
+            document.getElementById("pendingElectricity").style.display="block";
+
+            document.getElementById("pendingElectricity").innerHTML=`
+                <h4>${n.title}</h4>
+                <p>${n.message}</p>
+            `;
+
+        }
+
+    });
+
+}
+
 window.onload = function () {
     loadSidebar();
     loadFeeStructure();
     loadBills();
     loadHistory();
+    loadNotifications();
 };
