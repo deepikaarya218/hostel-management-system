@@ -670,6 +670,137 @@ app.get("/warden/student-payment-details/:studentId", async (req, res) => {
     }
 });
 
+// warden recent table
+
+app.get("/warden/recent-payments", async(req, res) => {
+  try{
+    const payments = await StudentPayment.find({
+      status: "Approved"
+    })
+    .populate("studentId", "name")
+    .sort({paidOn: -1})
+    .limit(10);
+
+    res.json(payments);
+  }catch(err){
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+// warden pending table
+app.get("/warden/pending-payment-summary", async (req, res) => {
+    try {
+
+        const feeStructure = await FeeStructure.findOne();
+        const students = await User.find({ role: "student" });
+
+        const result = [];
+
+        for (const student of students) {
+
+            // Approved Hostel Payments
+            const hostelPayments = await StudentPayment.find({
+                studentId: student._id,
+                paymentType: "Hostel Fee",
+                status: "Approved"
+            });
+
+            const hostelPaidAmount = hostelPayments.reduce(
+                (sum, p) => sum + p.amount,
+                0
+            );
+
+            const hostelPending =
+                feeStructure.totalFee - hostelPaidAmount;
+
+            const hostelPendingInstallments =
+                feeStructure.installments.length - hostelPayments.length;
+
+            // Pending Electricity Bills
+            const pendingBills = await StudentBill.find({
+                studentId: student._id,
+                status: "Pending"
+            });
+
+            const electricityPendingAmount = pendingBills.reduce(
+                (sum, b) => sum + b.billAmount,
+                0
+            );
+
+            const totalPending =
+                hostelPending + electricityPendingAmount;
+
+            // Agar kuch bhi pending nahi hai to table me mat dikhao
+            if (totalPending <= 0) continue;
+
+            // Hostel ki next due date
+            let hostelDueDate = null;
+
+            if (hostelPendingInstallments > 0) {
+
+                hostelDueDate =
+                    feeStructure.installments[hostelPayments.length]?.dueDate;
+
+            }
+
+            // Electricity ki nearest due date
+            let billDueDate = null;
+
+            if (pendingBills.length > 0) {
+
+                billDueDate = pendingBills
+                    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))[0]
+                    .dueDate;
+
+            }
+
+            // Earliest Due Date
+            let dueDate = hostelDueDate || billDueDate;
+
+            if (hostelDueDate && billDueDate) {
+
+                dueDate =
+                    new Date(hostelDueDate) < new Date(billDueDate)
+                        ? hostelDueDate
+                        : billDueDate;
+
+            }
+
+            result.push({
+
+                studentId: student._id,
+
+                studentName: student.name,
+
+                pendingAmount: totalPending,
+
+                dueDate,
+
+                hostelFee:
+                    `${hostelPendingInstallments}/${feeStructure.installments.length} Pending`,
+
+                electricityBill:
+                    `${pendingBills.length} Pending`
+
+            });
+
+        }
+
+        res.json(result);
+
+    } catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            error: err.message
+        });
+
+    }
+});
+
 // Server Start
 app.listen(PORT, () => {
   console.log(`Server Running on Port ${PORT}`);

@@ -570,6 +570,91 @@ function fillSummary(data){
 
 }
 
+async function loadRecentPayments(){
+    const res = await fetch("http://localhost:5000/warden/recent-payments");
+    const payments = await res.json();
+    console.log(payments);
+
+    const tbody = document.getElementById("recent-payment-body");
+    tbody.innerHTML = "";
+
+    payments.forEach(payment => {
+        console.log(payment);
+        let installment = "-";
+
+        if (payment.paymentType === "Hostel Fee") {
+            installment = "Hostel Fee";
+        } else {
+            installment = "Electricity Bill";
+        }
+
+        tbody.innerHTML += `
+            <tr>
+
+                <td>${payment.studentId.name}</td>
+
+                <td>${payment.paymentType}</td>
+
+                <td>₹${payment.amount}</td>
+
+                <td>${payment.paymentMethod}</td>
+
+                <td>
+                    ${new Date(payment.paidOn).toLocaleDateString("en-IN")}
+                </td>
+
+            </tr>
+        `;
+    });
+}
+
+async function loadPendingSummary() {
+
+    const res = await fetch(
+        "http://localhost:5000/warden/pending-payment-summary"
+    );
+
+    const students = await res.json();
+
+    const tbody = document.getElementById("pending-payment-body");
+
+    tbody.innerHTML = "";
+
+    students.forEach(student => {
+
+        tbody.innerHTML += `
+            <tr>
+
+                <td>${student.studentName}</td>
+
+                <td>₹${student.pendingAmount}</td>
+
+                <td>
+                    ${student.dueDate
+                        ? new Date(student.dueDate).toLocaleDateString("en-IN")
+                        : "-"}
+                </td>
+
+                <td>${student.hostelFee}</td>
+
+                <td>${student.electricityBill}</td>
+
+                <td>
+                    <button class="notify-btn"
+                        onclick="sendReminder('${student.studentId}')">
+
+                        Notify
+
+                    </button>
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+}
+
 window.onload = function () {
     loadSidebar();
     showCurrentDate();
@@ -577,4 +662,6 @@ window.onload = function () {
     loadStudents();
     loadPayments();
     loadStudentPayments();
+    loadRecentPayments();
+    loadPendingSummary();
 };
