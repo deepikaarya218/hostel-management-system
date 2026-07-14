@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Wardon Dashboard</title>
+        <link rel="stylesheet" href="css/mess.css">
+    </head>
+    <body>
+        <div id="slidebar-container"></div>
+        <div class="main-content">
+            <h1>Welcome Warden</h1>
+            <p id="current-date"></p>
+
+            <div class="tabs">
+                <h4 onclick="showSection('summary', this)">Mess Summary</h4>
+                <h4 onclick="showSection('menu', this)">Weekly Menu</h4>
+                <h4 onclick="showSection('items', this)">Extra Items</h4>
+                <h4 onclick="showSection('orders', this)">Orders</h4>
+                <h4 onclick="showSection('analytics', this)">Analytics</h4>
+            </div>
+
+            <div id="summary" class="section">
+                <h2>Quick Overview</h2>
+
+                <div class="summ">
+                    <div class="item">
+                        <span>Total Students</span>
+                        <h3 id="total-stud">Loading...</h3>
+                    </div>
+                    <div class="item">
+                        <span>Total's Orders</span>
+                        <h3 id="total-order">Loading...</h3>
+                    </div>
+                    <div class="item">
+                        <span>Total's Revenue</span>
+                        <h3 id="total-revenue">Loading...</h3>
+                    </div>
+                    <div class="item">
+                        <span>Active Orders</span>
+                        <h3 id="active-order">Loading...</h3>
+                    </div>
+                    <div class="item">
+                        <span>Ready for Pickup</span>
+                        <h3 id="ready-pich">Loading...</h3>
+                    </div>
+                    <div class="item">
+                        <span>Completed Orders</span>
+                        <h3 id="comp-order">Loading...</h3>
+                    </div>
+                </div>
+
+                <div class="recent-order">
+                    <h3>Recent Orders</h3>
+                    <table>
+                        <thead>
+                            <th>Order ID</th>
+                            <th>Student</th>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </thead>
+                        <tbody id="recent-order-table">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="menu" class="section">
+                <div class="top">
+                    <h2>Weekly Mess Menu</h2>
+                    <div class="buttons">
+                        <button class="edit">🖋️ Edit Menu</button>
+                        <button class="publish">Publish Menu</button>
+                        <button class="save">📑Save</button>
+                    </div>
+                </div>
+
+                <div class="mess-table">
+                    <table>
+                        <thead>
+                           <th>Day</th>
+                           <th>Breakfast</th>
+                           <th>Lunch</th>
+                           <th>Dinner</th>
+                        </thead>
+                        <tbody id="mess-menu-table">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="items" class="section">
+                <div class="top">
+                    <h2>Extra Items</h2>
+                    <button class="add-btn">+ Add New Item</button>
+                </div>
+
+                <div class="add-item">
+                    <h3>Add New Item</h3>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Item Name</label>
+                            <input type="text" placeholder="e.g. Samosa">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Price (₹)</label>
+                            <input type="number" placeholder="e.g. 25">
+                        </div>
+                    </div>
+
+                    <button class="submit-item">Add Item</button>
+                </div>
+
+                <div class="available-item">
+                    <h3>Available Items</h3>
+
+                    <div class="item-detail">
+                        <div class="detail">
+                            <h4>Coffee</h4>
+                            <p>₹20</p>
+                            <span>🖋️🗑️</span>
+                        </div>
+                        <div class="detail">
+                            <h4>Tea</h4>
+                            <p>₹10</p>
+                            <span>🖋️🗑️</span>
+                        </div>
+                        <div class="detail">
+                            <h4>Biscuit</h4>
+                            <p>₹15</p>
+                            <span>🖋️🗑️</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="orders" class="section">
+                <h2>Paid Orders</h2>
+
+                <div class="filter">
+                    <div class="filter-item">
+                        <label for="name">Search Student Name/Order ID</label>
+                        <input id="name" type="text" placeholder="Search">
+                    </div>
+                    <div class="filter-item">
+                        <label for="date">Filter bu Date</label>
+                        <input id="date" type="date" placeholder="Search">
+                    </div>
+                    <div class="filter-item">
+                        <label for="status">Filter by Status</label>
+                        <select id="status">
+                            <option value="">All Status</option>
+                            <option value="prepare">Preparing</option>
+                            <option value="ready">Ready</option>
+                            <option value="complete">Completed</option>
+                        </select>
+                    </div>
+                    <div class="button">
+                        <button class="apply-filter">Apply Filter</button>
+                    </div>
+                </div>
+
+                <div class="order-table">
+                    <table>
+                        <thead>
+                            <th>Order ID</th>
+                            <th>Student Name</th>
+                            <th>Item</th>
+                            <th>Quality</th>
+                            <th>Amount</th>
+                            <th>Payment</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody id="order-detail">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="analytics" class="section">
+                <h2>Analytics</h2>
+                <div class="analytics-grid">
+                    
+                    <!-- Daily Revenue -->
+                    <div class="analytics-card">
+                        <h3>Daily Revenue</h3>
+
+                        <canvas id="dailyRevenueChart"></canvas>
+                        <p class="card-footer">
+                            Weekly Total: <strong>₹15,181</strong>
+                        </p>
+                    </div>
+
+        <!-- Most Ordered Items -->
+        <div class="analytics-card">
+            <h3>Most Ordered Items</h3>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span>Coffee</span>
+                    <span>85 Orders</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress blue" style="width:85%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span>Tea</span>
+                    <span>72 Orders</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress blue" style="width:72%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span>Samosa</span>
+                    <span>68 Orders</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress blue" style="width:68%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span>Maggi</span>
+                    <span>52 Orders</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress blue" style="width:52%"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Order Status -->
+        <div class="analytics-card">
+
+            <h3>Order Status Distribution</h3>
+
+            <div class="status-item">
+                <span><span class="dot green"></span>Completed</span>
+                <strong>42</strong>
+            </div>
+
+            <div class="status-item">
+                <span><span class="dot blue"></span>Ready</span>
+                <strong>3</strong>
+            </div>
+
+            <div class="status-item">
+                <span><span class="dot yellow"></span>Preparing</span>
+                <strong>5</strong>
+            </div>
+
+        </div>
+
+        <!-- Orders by Time -->
+        <div class="analytics-card">
+
+            <h3>Orders by Time of Day</h3>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span>Morning (6-10 AM)</span>
+                    <span>24</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress purple" style="width:60%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span>Afternoon (10-2 PM)</span>
+                    <span>32</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress purple" style="width:90%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span>Evening (2-6 PM)</span>
+                    <span>18</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress purple" style="width:48%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span>Night (6-10 PM)</span>
+                    <span>12</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress purple" style="width:35%"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Weekly Orders -->
+        <div class="analytics-card">
+
+            <h3>Weekly Orders</h3>
+
+            <canvas id="weeklyOrdersChart"></canvas>
+
+            <p class="card-footer">
+                Total Orders: <strong>260</strong>
+            </p>
+
+        </div>
+
+        <!-- Monthly Revenue -->
+        <div class="analytics-card">
+
+            <h3>Monthly Revenue</h3>
+
+            <canvas id="monthlyRevenueChart"></canvas>
+
+            <p class="card-footer">
+                Average Revenue: <strong>₹53,167</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+            </div>
+        </div>
+    </body>
+    <script src="js/mess.js"></script>
+</html>
