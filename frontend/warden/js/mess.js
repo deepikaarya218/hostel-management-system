@@ -119,13 +119,100 @@ async function saveMenu(){
     loadMenu();
 }
 
+async function addItem(){
+    const name = document.getElementById("item-name").value.trim();
+    const price = document.getElementById("item-price").value;
+
+    if(name === "" || price === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    const response = await fetch("http://localhost:5000/items", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name, 
+            price
+        })
+    });
+
+    const data = await response.json();
+    alert(data.message);
+
+    document.getElementById("item-name").value = "";
+    document.getElementById("item-price").value = "";
+
+    loadItems();
+}
+
+async function loadItems(){
+    try {
+
+        const response = await fetch("http://localhost:5000/items");
+        const items = await response.json();
+
+        const container = document.getElementById("item-detail");
+
+        container.innerHTML = "";
+
+        items.forEach(item => {
+
+            container.innerHTML += `
+                <div class="detail">
+
+                    <div class="item-info">
+                        <div class="item-text">
+                            <h4>${item.name}</h4>
+                            <p>₹${item.price}</p>
+                        </div>
+                    </div>
+
+                    <div class="action">
+                        <span onclick="editItem('${item._id}')">🖋️</span>
+                        <span onclick="deleteItem('${item._id}')">🗑️</span>
+                    </div>
+
+                </div>
+            `;
+
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+    }
+}
+
+async function deleteItem(id){
+    const confirmDelete = confirm("Are you sure you want to delete this item?");
+    if(!confirmDelete) return;
+
+    try{
+        const response = await fetch(`http://localhost:5000/items/${id}`, {
+            method: "DELETE"
+        });
+
+        const data = await response.json();
+        alert(data.message);
+        loadItems();
+    }catch(err){
+        console.log(err);
+    }
+}
+
 window.onload = function () {
     loadSidebar();
     showCurrentDate();
     loadMenu();
+    loadItems();
 
     document.getElementById("summary").classList.add("active");
     document.querySelector(".tabs h4").classList.add("active");
     document.getElementById("edit-btn").addEventListener("click", enableEditing);
     document.getElementById("save-btn").addEventListener("click", saveMenu);
+    document.getElementById("add-item-btn").addEventListener("click", addItem);
 }

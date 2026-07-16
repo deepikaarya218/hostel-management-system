@@ -267,10 +267,52 @@ async function loadMessMenu() {
 
 }
 
+async function loadExtraItems() {
+
+    try {
+
+        const response = await fetch("http://localhost:5000/items");
+        const items = await response.json();
+
+        const container = document.getElementById("extra-container");
+
+        container.innerHTML = "";
+
+        items.forEach(item => {
+
+            container.innerHTML += `
+                <div class="extra-item">
+
+                    <p>🍽️</p>
+
+                    <h3>${item.name}</h3>
+
+                    <h4>₹${item.price}</h4>
+
+                    <button
+                        class="order-btn"
+                        onclick="addToCart('${item.name}', ${item.price})">
+                        Add to Cart
+                    </button>
+
+                </div>
+            `;
+
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+    }
+
+}
+
 window.onload = function () {
     loadSidebar();
     showCurrentDate();
     updateMealStatus();
     loadHistory();
     loadMessMenu();
+    loadExtraItems();
 };

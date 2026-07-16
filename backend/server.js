@@ -13,6 +13,7 @@ const StudentPayment = require("./models/StudentPayment");
 const Notification = require("./models/warden/Notification");
 
 const WeeklyMenu = require("./models/WeeklyMenu");
+const ExtraItem = require("./models/ExtraItem");
 
 const multer = require("multer");
 const path = require("path");
@@ -956,6 +957,55 @@ app.put("/menu", async(req, res) => {
     })
   }
 })
+
+app.post("/items", async(req, res) =>{
+  try{
+    const {name, price} = req.body;
+    const item = new ExtraItem({
+      name,
+      price
+    });
+
+    await item.save();
+
+    res.json({
+      success: true,
+      message: "Item Added Successfully"
+    });
+  }catch(err){
+    success: false,
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+app.get("/items", async(req, res) => {
+  try{
+    const items = await ExtraItem.find();
+    res.json(items);
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+app.delete("/items/:id", async(req, res) => {
+  try{
+    await ExtraItem.findByIdAndDelete(req.params.id);
+    res.json({
+      success: true,
+      message: "Item Deleted Successfully"
+    });
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
 
 // Server Start
 app.listen(PORT, () => {
