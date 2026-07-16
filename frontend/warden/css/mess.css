@@ -307,61 +307,72 @@ p{
 
 
 
-/* Available Items */
-
 .available-item{
+    margin-top:30px;
     background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:15px;
     padding:25px;
-    box-shadow:0 4px 12px rgba(0,0,0,.05);
+    border-radius:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
 .available-item h3{
     margin-bottom:20px;
+    font-size:24px;
+    color:#1f2937;
 }
-
-
-/* Item List */
 
 .item-detail{
     display:flex;
     flex-direction:column;
-    gap:18px;
 }
-
-
-/* Single Item */
 
 .detail{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    border:1px solid #e5e7eb;
-    border-radius:12px;
-    padding:18px 22px;
-    transition:.3s;
+    padding:18px 0;
+    border-bottom:1px solid #e5e7eb;
+    background-color: #f4f5f7;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
-.detail:hover{
-    box-shadow:0 6px 18px rgba(0,0,0,.08);
-    transform:translateY(-2px);
+.detail:last-child{
+    border-bottom:none;
 }
 
-.detail h4{
-    font-size:20px;
-    margin-bottom:5px;
+.item-info{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.item-text h4{
+    margin:0;
+    font-size:18px;
     color:#111827;
+    margin-left: 20px;
 }
 
-.detail p{
+.item-text p{
+    margin-top:5px;
+    font-size:16px;
     color:#6b7280;
 }
 
-.detail span{
-    font-size:22px;
+.actions{
+    display:flex;
+    gap:18px;
+    font-size:24px;
     cursor:pointer;
-    letter-spacing:10px;
+}
+
+.actions span{
+    transition:.3s;
+}
+
+.actions span:hover{
+    transform:scale(1.15);
 }
 
 .order-table {
@@ -624,4 +635,50 @@ grid-template-columns:1fr;
 
 }
 
+}
+
+.menu-input{
+    width:95%;
+    padding:8px 10px;
+    border:1px solid #d1d5db;
+    border-radius:6px;
+    outline:none;
+    font-size:14px;
+}
+
+.menu-input:focus{
+    border-color:#3b82f6;
+}
+
+.edit,
+.save{
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+
+    padding:16px 25px;
+
+    font-size:14px;
+    font-weight:450;
+
+    border-radius:18px;
+    cursor:pointer;
+    transition:.3s ease;
+
+    font-family:'Poppins',sans-serif;
+}
+
+.edit{
+    background:#fff;
+    color:#1f2937;
+
+    border:2px solid #d1d5db;
+}
+
+.save{
+    background:#2563eb;
+    color:#fff;
+    border:none;
+
+    box-shadow:0 8px 20px rgba(37,99,235,.25);
 }

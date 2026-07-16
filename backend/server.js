@@ -12,6 +12,8 @@ const StudentBill = require("./models/warden/StudentBill");
 const StudentPayment = require("./models/StudentPayment");
 const Notification = require("./models/warden/Notification");
 
+const WeeklyMenu = require("./models/WeeklyMenu");
+
 const multer = require("multer");
 const path = require("path");
 
@@ -881,6 +883,79 @@ app.get("/student-notifications/:studentId", async (req, res) => {
 
     }
 });
+
+app.get("/seed-menu", async(req, res) => {
+  try{
+    const count = await WeeklyMenu.countDocuments();
+
+    if(count > 0){
+      return res.send("Menu already exits");
+    }
+
+    const days = [
+      "Monday",
+      "Tuesday",
+      "wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ];
+
+    const menu = days.map(day => ({
+      day,
+      breakfast: "",
+      lunch: "",
+      snacks: "",
+      dinner: ""
+    }));
+
+    await WeeklyMenu.insertMany(menu);
+    res.send("Weekly menu created successfully!");
+  }
+  catch(err){
+    res.status(500).json({error: err.messgae});
+  }
+});
+
+app.get("/get-menu", async (req, res) => {
+    try {
+      console.log("MENU API HIT");
+        const menu = await WeeklyMenu.find();
+        res.json(menu);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+app.put("/menu", async(req, res) => {
+  console.log("PUT API HIT");
+  console.log(req.body);
+  try{
+    const menu = req.body;
+    for(const item of menu){
+      await WeeklyMenu.findOneAndUpdate(
+        {day: item.day},
+        {
+          breakfast: item.breakfast,
+          lunch: item.lunch,
+          snacks: item.snacks,
+          dinner: item.dinner
+        }
+      );
+    }
+
+    res.json({
+      success: true,
+      message: "Menu Updated Successfully"
+    });
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+  }
+})
 
 // Server Start
 app.listen(PORT, () => {

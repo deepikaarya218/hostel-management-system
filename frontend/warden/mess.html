@@ -70,9 +70,9 @@
                 <div class="top">
                     <h2>Weekly Mess Menu</h2>
                     <div class="buttons">
-                        <button class="edit">🖋️ Edit Menu</button>
-                        <button class="publish">Publish Menu</button>
-                        <button class="save">📑Save</button>
+                        <button id="edit-btn" class="edit">🖋️ Edit Menu</button>
+                        <!-- <button class="publish">Publish Menu</button> -->
+                        <button id="save-btn" class="save">📑Save</button>
                     </div>
                 </div>
 
@@ -82,6 +82,7 @@
                            <th>Day</th>
                            <th>Breakfast</th>
                            <th>Lunch</th>
+                           <th>Snacks</th>
                            <th>Dinner</th>
                         </thead>
                         <tbody id="mess-menu-table">
@@ -120,19 +121,40 @@
 
                     <div class="item-detail">
                         <div class="detail">
-                            <h4>Coffee</h4>
-                            <p>₹20</p>
-                            <span>🖋️🗑️</span>
+                            <div class="item-info">
+                                <div class="item-text">
+                                    <h4>Coffee</h4>
+                                    <p>₹20</p>
+                                </div>
+                            </div>
+                            <div class="action">
+                                <span>🖋️</span>
+                                <span>🗑️</span>
+                            </div>
                         </div>
                         <div class="detail">
-                            <h4>Tea</h4>
-                            <p>₹10</p>
-                            <span>🖋️🗑️</span>
+                            <div class="item-info">
+                                <div class="item-text">
+                                    <h4>Tea</h4>
+                                    <p>₹10</p>
+                                </div>
+                            </div>
+                            <div class="action">
+                                <span>🖋️</span>
+                                <span>🗑️</span>
+                            </div>
                         </div>
                         <div class="detail">
-                            <h4>Biscuit</h4>
-                            <p>₹15</p>
-                            <span>🖋️🗑️</span>
+                            <div class="item-info">
+                                <div class="item-text">
+                                    <h4>Biscuit</h4>
+                                    <p>₹15</p>
+                                </div>
+                            </div>
+                            <div class="action">
+                                <span>🖋️</span>
+                                <span>🗑️</span>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -234,9 +234,43 @@ async function loadHistory(){
     })
 }
 
+async function loadMessMenu() {
+
+    try {
+
+        const response = await fetch("http://localhost:5000/get-menu");
+        const menu = await response.json();
+
+        const table = document.getElementById("mess-table");
+
+        table.innerHTML = "";
+
+        menu.forEach(item => {
+
+            table.innerHTML += `
+                <tr>
+                    <td>${item.day}</td>
+                    <td>${item.breakfast || "-"}</td>
+                    <td>${item.lunch || "-"}</td>
+                    <td>${item.snacks || "-"}</td>
+                    <td>${item.dinner || "-"}</td>
+                </tr>
+            `;
+
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+    }
+
+}
+
 window.onload = function () {
     loadSidebar();
     showCurrentDate();
     updateMealStatus();
     loadHistory();
+    loadMessMenu();
 };
