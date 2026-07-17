@@ -143,6 +143,7 @@ async function payNow() {
   let total = parseFloat(document.getElementById("total").innerText.replace("₹", ""));
 
    let userName = localStorage.getItem("userName");
+   let studentId = localStorage.getItem("userId");
    console.log(userName);
 
   let items = cart.map(item => ({
@@ -152,6 +153,7 @@ async function payNow() {
   }));
 
   let data = {
+    studentId,
     name: userName,
     items,
     subtotal,

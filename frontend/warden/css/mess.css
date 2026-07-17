@@ -682,3 +682,72 @@ grid-template-columns:1fr;
 
     box-shadow:0 8px 20px rgba(37,99,235,.25);
 }
+
+.badge{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:400;
+    text-align:center;
+    min-width:90px;
+    letter-spacing:0.3px;
+}
+
+/* New Order */
+.badge.new{
+    background:#fff3cd;
+    color:#b7791f;
+    border:1px solid #f6d365;
+}
+
+/* Preparing */
+.badge.preparing{
+    background:#dbeafe;
+    color:#1d4ed8;
+    border:1px solid #93c5fd;
+}
+
+/* Ready */
+.badge.ready{
+    background:#dcfce7;
+    color:#15803d;
+    border:1px solid #86efac;
+}
+
+/* Completed */
+.badge.completed{
+    background:#e5e7eb;
+    color:#374151;
+    border:1px solid #d1d5db;
+}
+
+.order-action{
+    padding:8px 18px;
+    border:none;
+    border-radius:8px;
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.order-action:hover{
+    transform:translateY(-2px);
+}
+
+/* Accept */
+.order-action.accept{
+    background:#2563eb;
+}
+
+/* Ready */
+.order-action.ready{
+    background:#16a34a;
+}
+
+/* Complete */
+.order-action.complete{
+    background:#7c3aed;
+}

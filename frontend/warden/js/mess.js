@@ -204,11 +204,104 @@ async function deleteItem(id){
     }
 }
 
+async function loadOrders(){
+    const response = await fetch("http://localhost:5000/orders");
+    const orders = await response.json();
+
+    const tbody = document.getElementById("order-detail");
+    tbody.innerHTML = "";
+
+    orders.forEach(order => {
+        const items = order.items.map(item => `${item.name} × ${item.quantity}`).join(", ");
+        const quantity = order.items.reduce((total, item) => total + item.quantity, 0);
+
+        const date = new Date(order.date).toLocaleString("en-IN");
+
+        tbody.innerHTML += `
+        <tr>
+                <td>${order.name}</td>
+                <td>${items}</td>
+                <td>${quantity}</td>
+                <td>₹${order.amount}</td>
+                <td>${order.method}</td>
+                <td>${date}</td>
+                <td>${getStatusBadge(order.status)}</td>
+                <td>${getActionButton(order)}</td>
+            </tr>`;
+    });
+}
+
+function getStatusBadge(status){
+
+    if(status === "New Order"){
+        return `<span class="badge new">New Order</span>`;
+    }
+
+    if(status === "Preparing"){
+        return `<span class="badge preparing">Preparing</span>`;
+    }
+
+    if(status === "Ready"){
+        return `<span class="badge ready">Ready</span>`;
+    }
+
+    return `<span class="badge completed">Completed</span>`;
+}
+
+function getActionButton(order){
+
+    if(order.status === "New Order"){
+        return `<button class="order-action accept" onclick="updateStatus('${order._id}','Preparing')">
+                    Accept
+                </button>`;
+    }
+
+    if(order.status === "Preparing"){
+        return `<button class="order-action ready" onclick="updateStatus('${order._id}','Ready')">
+                    Ready
+                </button>`;
+    }
+
+    if(order.status === "Ready"){
+        return `<button class="order-action complete" onclick="updateStatus('${order._id}','Completed')">
+                    Complete
+                </button>`;
+    }
+
+    return `<span style="color:#16a34a;font-weight:600;">✓ Done</span>`;
+}
+
+async function updateStatus(id, status){
+    try{
+        const response = await fetch(`http://localhost:5000/orders/${id}`, {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                status: status
+            })
+
+        });
+
+        const data = await response.json();
+
+        alert(data.message);
+        loadOrders();
+    }catch(err){
+        console.log(err);
+    }
+}
+
 window.onload = function () {
     loadSidebar();
     showCurrentDate();
     loadMenu();
     loadItems();
+    loadOrders();
 
     document.getElementById("summary").classList.add("active");
     document.querySelector(".tabs h4").classList.add("active");

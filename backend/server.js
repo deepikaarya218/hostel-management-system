@@ -113,17 +113,21 @@ app.post("/login", async (req, res) => {
 // API → save payment
 app.post("/payment", async (req, res) => {
   try {
-    const { name, items, subtotal, tax, amount, method } = req.body;
+    const {studentId, name, items, subtotal, tax, amount, method } = req.body;
 
     console.log("Items received:", items);
+    const orderId = "ORD" + Date.now();
 
     const newPayment = new Payment({
+      orderId,
+      studentId,
       name,
       items,
       subtotal,
       tax,
       amount,
-      method
+      method,
+      status: "New Order"
     });
 
     await newPayment.save();
@@ -1005,6 +1009,92 @@ app.delete("/items/:id", async(req, res) => {
       error: err.message
     });
   }
+});
+
+// warden want all order
+
+app.get("/orders", async(req, res) => {
+  try{
+    const orders = await Payment.find().sort({ date: -1 })
+    res.json(orders);
+  }catch(err){
+    console.error(err);   // <-- ye add karo
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+app.put("/orders/:id", async (req, res) => {
+  try {
+
+    const { status } = req.body;
+     console.log("Status received:", status);
+
+    const order = await Payment.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+     console.log("Order found:", order.orderId);
+
+    // Sirf Ready hone par notification bhejo
+    if (status === "Ready") {
+      console.log("Inside Ready block");
+
+      await Notification.create({
+        studentId: order.studentId,
+        title: "🍽️ Order Ready for Pickup",
+        message: `Your order (${order.orderId}) is ready. Please collect it from the mess counter.`,
+      });
+
+    }
+
+    if (status === "Completed") {
+      console.log("Inside Complete block");
+
+      await Notification.create({
+        studentId: order.studentId,
+        title: "🍽️ Order Completed",
+        message: `Your order (${order.orderId}) is completed.`,
+      });
+
+    }
+
+    res.json({
+      success: true,
+      message: "Order status updated successfully"
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+
+  }
+});
+
+app.get("/notifications/:studentId", async (req, res) => {
+
+  try {
+
+    const notifications = await Notification.find({
+      studentId: req.params.studentId
+    }).sort({ createdAt: -1 });
+
+    res.json(notifications);
+
+  } catch (err) {
+
+    res.status(500).json({
+      error: err.message
+    });
+
+  }
+
 });
 
 // Server Start
