@@ -32,7 +32,7 @@
                     <textarea id="desc" placeholder="Write a clear, helpful announcement..."></textarea>
                 </div></div>
 
-                <div class="form-row">
+                <div class="form-row row-3">
                 <div class="add-item">
                     <label>Category</label>
                     <select id="category-item">
@@ -67,14 +67,11 @@
 
                 <div class="add-item">
                     <label>Publish Options :</label>
-                    <form>
-                        <input type="radio" id="publish" name="publish_option" value="publish">
-                        <label for="publish">Publish</label><br>
-                        <input type="radio" id="pin" name="publish_option" value="pin">
-                        <label for="pin">Pin announcement</label><br>
-                        <input type="radio" id="notify" name="publish_option" value="notify">
-                        <label for="notify">Notify Students</label>
-                    </form>
+                    <div class="publish-options">
+                        <label><input type="checkbox" id="publish">Publish</label>
+                        <label><input type="checkbox" id="pin">Pin Announcement</label>
+                        <label><input type="checkbox" id="notify">Notify Students</label>
+                    </div>
                 </div>
 
                 <div class="submit-item">
@@ -112,7 +109,7 @@
             <!-- SEARCH BAR -->
              <div class="search">
                 <div class="search-item">
-                    <input type="text" placeholder="Search anoouncements...">
+                    <input type="text" placeholder="Search announcements...">
                 </div>
                 <div class="search-item">
                     <select class="by-category">
