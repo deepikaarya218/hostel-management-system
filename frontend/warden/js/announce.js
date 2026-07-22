@@ -33,6 +33,29 @@ function closeAnnouncementForm(){
     document.getElementById("add-announce").style.display = "none";
 }
 
+function toggleMenu(event) {
+    event.stopPropagation();
+
+    const menu = event.currentTarget.nextElementSibling;
+
+    // Pehle sab menus band karo
+    document.querySelectorAll(".dropdown-menu").forEach(item => {
+        if(item !== menu){
+            item.classList.remove("show");
+        }
+    });
+
+    // Sirf current menu toggle karo
+    menu.classList.toggle("show");
+}
+
+// Outside click -> close menu
+document.addEventListener("click", function () {
+    document.querySelectorAll(".dropdown-menu").forEach(item => {
+        item.classList.remove("show");
+    });
+});
+
 window.onload = function () {
     loadSidebar();
     showCurrentDate();

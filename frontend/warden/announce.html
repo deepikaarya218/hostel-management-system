@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Student Dashboard</title>
         <link rel="stylesheet" href="css/announce.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     </head>
     <body>
         <div id="slidebar-container"></div>
@@ -142,6 +143,41 @@
             </div>
 
             <!-- ANNOUNCEMENT FEED -->
+            <div class="announce-feed">
+                <h3>Announcement feed</h3>
+                <span id="total-pin">4 active notices · pinned first</span>
+                <div class="announce-item">
+                    <div class="top-item">
+                        <span id="priority-detail">HIGH PRIORITY</span>
+                        <span id="pinned-detail">📌Pinned</span>
+                        <span id="category-detail">MAINTENANCE</span>
+                    </div>
+                    <div class="description-item">
+                        <div class="main-detail">
+                            <h4 id="desc-heading">Water maintenance scheduled for Block A</h4>
+                            <span id="desc-detail">The water supply will be temporarily paused on Tuesday from 10:00 AM to 2:00 PM for essential maintenance.</span>
+                        </div>
+                        <div class="action-menu">
+                            <button class="menu-btn" onclick="toggleMenu(event)"><i class="fa-solid fa-ellipsis"></i></button>
+                            <div class="dropdown-menu">
+                                <a href="#"><i class="fa-regular fa-pen-to-square"></i><span>Edit</span></a>
+                                <a href="#"><i class="fa-regular fa-trash-can"></i><span>Delete</span></a>
+                                <a href="#"><i class="fa-solid fa-thumbtack"></i><span>Pin/Unpin</span></a>
+                                <a href="#"><i class="fa-regular fa-copy"></i><span>Duplicate</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <span id="posted-by">Posted by Warden</span>
+                        <span id="day-time">• Today, 10:24 AM</span>
+                    </div>
+                    <div class="seen-detail">
+                        <span id="total-student">👁️ 482</span>
+                        <span id="readed-by">✔️ 401 read</span>
+                        <span id="publish-or-draft">PUBLISHED</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
     <script src="js/announce.js"></script>
