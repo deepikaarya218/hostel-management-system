@@ -158,7 +158,7 @@ async function savePublish(){
 
 async function loadAnnouncements(){
     try{
-        const resposne = await fetch("http://localhost:5000/announcement");
+        const response = await fetch("http://localhost:5000/announcement");
         const result = await response.json();
         const container = document.getElementById("announce-list");
         container.innerHTML = "";
@@ -170,7 +170,7 @@ async function loadAnnouncements(){
         document.getElementById("total-pin").innerHTML =
             `${result.announcements.length} Active Notices`;
 
-        result.announments.forEach(item => {
+        result.announcements.forEach(item => {
             container.innerHTML += `
             <div class="announce-item">
             <div class="top-item">
@@ -247,7 +247,7 @@ async function loadAnnouncements(){
 
                 <div class="seen-detail">
 
-                    <span>${item.status}</span>
+                    <span id="publish-or-draft">${item.status.toUpperCase()}</span>
 
                     ${
                         item.notify
