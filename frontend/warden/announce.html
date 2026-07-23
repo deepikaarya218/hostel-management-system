@@ -37,12 +37,12 @@
                 <div class="add-item">
                     <label>Category</label>
                     <select id="category-item">
-                        <option value="">General</option>
-                        <option value="mess">Mess</option>
-                        <option value="payment">Payment</option>
-                        <option value="maintenance">Maintenance</option>
-                        <option value="emergency">Emergency</option>
-                        <option value="event">Events</option>
+                        <option value="General">General</option>
+                        <option value="Mess">Mess</option>
+                        <option value="Payment">Payment</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Emergency">Emergency</option>
+                        <option value="Event">Events</option>
                     </select>
                 </div>
 
@@ -50,9 +50,9 @@
                     <label>Priority</label>
                     <select id="priority-item">
                         <option value="">Select</option>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
                     </select>
                 </div>
 
@@ -60,25 +60,30 @@
                     <label>Audience</label>
                     <select id="audience-item">
                         <option value="">Select Audience</option>
-                        <option value="boys">Girls Hostel</option>
-                        <option value="girls">Boys Hostel</option>
-                        <option value="specific">Selected Room</option>
+                        <option value="Girls Hostel">Girls Hostel</option>
+                        <option value="Boys Hostel">Boys Hostel</option>
+                        <option value="Selected Room">Selected Room</option>
                     </select>
                 </div></div>
 
+                <div class="submit-item">
+                    <button class="draft" onclick="saveDraft()">Save Draft</button>
+                    <button class="public"  onclick="openPublishModal()">Publish</button>
+                </div>
+            </div>
+
+            <!-- MODAL FOR PUBLISH -->
+            <div class="modal">
                 <div class="add-item">
                     <label>Publish Options :</label>
+                    <button class="close-modal" onclick="closePublishModal()">✖</button>
                     <div class="publish-options">
-                        <label><input type="checkbox" id="publish">Publish</label>
                         <label><input type="checkbox" id="pin">Pin Announcement</label>
                         <label><input type="checkbox" id="notify">Notify Students</label>
                     </div>
-                </div>
-
-                <div class="submit-item">
-                    <button class="draft">Save Draft</button>
-                    <button class="public">Publish</button>
-                    <button class="reset">Reset</button>
+                    <div class="submit-btn">
+                        <button class="confirm-btn" onclick="savePublish()">Confirm Publish</button>
+                    </div>
                 </div>
             </div>
 
@@ -146,7 +151,7 @@
             <div class="announce-feed">
                 <h3>Announcement feed</h3>
                 <span id="total-pin">4 active notices · pinned first</span>
-                <div class="announce-item">
+                <div class="announce-item" id="announce-list">
                     <div class="top-item">
                         <span id="priority-detail">HIGH PRIORITY</span>
                         <span id="pinned-detail">📌Pinned</span>

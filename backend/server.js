@@ -14,6 +14,7 @@ const Notification = require("./models/warden/Notification");
 
 const WeeklyMenu = require("./models/WeeklyMenu");
 const ExtraItem = require("./models/ExtraItem");
+const Announcement = require("./models/Announcement");
 
 const multer = require("multer");
 const path = require("path");
@@ -1096,6 +1097,59 @@ app.get("/notifications/:studentId", async (req, res) => {
   }
 
 });
+
+app.post("/announcement", async(req, res) => {
+  try{
+    const {title, description, category, priority, audience, status, pin, notify} = req.body;
+
+    if (!title || !description || !audience) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all required fields."
+      });
+    }
+
+    const announcement = new Announcement({
+      title, description, category, priority, audience, status, pin, notify
+    });
+
+    await announcement.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Announcement created successfully"
+    });
+
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+
+app.get("/announcement", async (req, res) => {
+    try {
+
+        const announcements = await Announcement.find()
+            .sort({ pin: -1, createdAt: -1 });
+
+        res.status(200).json({
+            success: true,
+            announcements
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            error: err.message
+        });
+
+    }
+});
+
 
 // Server Start
 app.listen(PORT, () => {
