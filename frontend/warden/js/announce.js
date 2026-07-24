@@ -74,9 +74,19 @@ async function saveDraft(){
         pin: false,
         notify: false
     };
+    let url = "http://localhost:5000/announcement";
+    let method = "POST";
+
+    if (editAnnouncementId) {
+        url = `http://localhost:5000/announcement/${editAnnouncementId}`;
+        method = "PUT";
+    }
+
+    console.log(url);
+    console.log(method);
     try{
-        const response = await fetch("http://localhost:5000/announcement",{
-            method:"POST",
+        const response = await fetch(url,{
+            method,
             headers:{
                 "Content-Type":"application/json"
             },
@@ -84,12 +94,22 @@ async function saveDraft(){
         });
         const result = await response.json();
         if(result.success){
-            alert("Draft saved successfully.");
+            if (editAnnouncementId) {
+                alert("Draft updated successfully.");
+            } else {
+                alert("Draft saved successfully.");
+            }
             document.getElementById("title").value = "";
             document.getElementById("desc").value = "";
             document.getElementById("category-item").value = "";
             document.getElementById("priority-item").value = "";
             document.getElementById("audience-item").value = "";
+
+            editAnnouncementId = null;
+
+            document.querySelector(".draft").innerText = "Save Draft";
+            document.querySelector(".draft").style.display = "inline-block";
+            document.querySelector(".public").style.display = "inline-block";
             loadAnnouncements();
             closeAnnouncementForm();
         }
@@ -125,9 +145,16 @@ async function savePublish(){
         pin,
         notify
     };
+    let url = "http://localhost:5000/announcement";
+    let method = "POST";
+
+    if(editAnnouncementId){
+        url = `http://localhost:5000/announcement/${editAnnouncementId}`;
+        method = "PUT";
+    }
     try{
-        const response = await fetch("http://localhost:5000/announcement", {
-            method: "POST",
+        const response = await fetch(url, {
+            method,
             headers:{
                 "Content-Type": "application/json"
             },
@@ -135,7 +162,11 @@ async function savePublish(){
         });
         const result = await response.json();
         if(result.success){
-            alert("Announcement published successfully.");
+            if(editAnnouncementId){
+                alert("Announcement published successfully.");
+            }else{
+                alert("Announcement created successfully.");
+            }
             document.getElementById("title").value = "";
             document.getElementById("desc").value = "";
             document.getElementById("category-item").value = "";
@@ -143,6 +174,14 @@ async function savePublish(){
             document.getElementById("audience-item").value = "";
             document.getElementById("pin").checked = false;
             document.getElementById("notify").checked = false;
+
+            editAnnouncementId = null;
+
+            document.querySelector(".draft").innerText = "Save Draft";
+            document.querySelector(".draft").style.display = "inline-block";
+            document.querySelector(".public").style.display = "inline-block";
+            document.getElementById("update-btn").style.display = "none";
+
             loadAnnouncements();
             closePublishModal();
             closeAnnouncementForm();
@@ -166,6 +205,16 @@ async function loadAnnouncements(){
         if(!result.success){
             return;
         }
+
+        const announcements = result.announcements;
+
+        // add data
+        document.getElementById("total-announce").innerText = announcements.length;
+        document.getElementById("publish-announce").innerText = announcements.filter(item => item.status === "Published").length;
+        document.getElementById("total-schedule").innerText = announcements.filter(item => item.status === "Scheduled").length;
+        document.getElementById("total-drafts").innerText = announcements.filter(item => item.status === "Draft").length;
+        document.getElementById("total-high").innerText = announcements.filter(item => item.priority === "High").length;
+
 
         document.getElementById("total-pin").innerHTML =
             `${result.announcements.length} Active Notices`;
@@ -209,26 +258,23 @@ async function loadAnnouncements(){
 
                         <div class="dropdown-menu">
 
-                            <a href="#">
+                            <a href="#" onclick="editAnnouncement('${item._id}')">
                                 <i class="fa-regular fa-pen-to-square"></i>
                                 <span>Edit</span>
                             </a>
 
-                            <a href="#">
+                            <a href="#" onclick="deleteAnnouncement('${item._id}')">
                                 <i class="fa-regular fa-trash-can"></i>
                                 <span>Delete</span>
                             </a>
 
-                            <a href="#">
+                            ${item.status === "Published"?`
+                                <a href="#" onclick="togglePin('${item._id}')">
                                 <i class="fa-solid fa-thumbtack"></i>
-                                <span>Pin / Unpin</span>
-                            </a>
-
-                            <a href="#">
-                                <i class="fa-regular fa-copy"></i>
-                                <span>Duplicate</span>
-                            </a>
-
+                                <span>${item.pin ? "Unpin" : "Pin"}</span>
+                                </a>
+                                `:""
+                            }
                         </div>
 
                     </div>
@@ -237,9 +283,9 @@ async function loadAnnouncements(){
 
                 <div class="detail">
 
-                    <span>Posted by Warden</span>
+                    <span id="posted-by">Posted by Warden</span>
 
-                    <span>
+                    <span id="day-time">
                         • ${new Date(item.createdAt).toLocaleString()}
                     </span>
 
@@ -261,6 +307,103 @@ async function loadAnnouncements(){
 
             </div>`;
         });
+    }catch(err){
+        console.log(err);
+    }
+}
+
+async function deleteAnnouncement(id){
+    const confirmDelete = confirm("Delete this announcement?");
+    if(!confirmDelete) return;
+    try{
+        const response = await fetch(`http://localhost:5000/announcement/${id}`, {
+            method: "DELETE"
+        });
+        const result = await response.json();
+        if(result.success){
+            alert(result.message);
+            loadAnnouncements();
+        }
+    }catch(err){
+        console.log(err);
+    }
+}
+
+async function togglePin(id){
+
+    await fetch(`http://localhost:5000/announcement/pin/${id}`,{
+        method:"PUT"
+    });
+
+    loadAnnouncements();
+
+}
+
+let editAnnouncementId = null;
+
+async function editAnnouncement(id){
+    try{
+        const response = await fetch("http://localhost:5000/announcement");
+        const result = await response.json();
+        const announcement = result.announcements.find(item => item._id === id);
+
+        if(!announcement) return;
+
+        editAnnouncementId = id;
+
+        showAnnouncementForm();
+
+        document.getElementById("title").value = announcement.title;
+        document.getElementById("desc").value = announcement.description;
+        document.getElementById("category-item").value = announcement.category;
+        document.getElementById("priority-item").value = announcement.priority;
+        document.getElementById("audience-item").value = announcement.audience;
+
+        if(announcement.status === "Draft"){
+            document.querySelector(".draft").innerText = "Update Draft";
+            document.querySelector(".draft").style.display = "inline-block";
+            document.querySelector(".public").style.display = "inline-block";
+            document.getElementById("update-btn").style.display = "none";
+        }else{
+            document.querySelector(".draft").style.display = "none";
+            document.querySelector(".public").style.display = "none";
+            document.getElementById("update-btn").style.display = "inline-block";
+        }
+    }catch(err){
+
+        console.log(err);
+    }
+}
+
+async function updateAnnouncement(){
+    const data = {
+        title: document.getElementById("title").value.trim(),
+        description: document.getElementById("desc").value.trim(),
+        category: document.getElementById("category-item").value,
+        priority: document.getElementById("priority-item").value,
+        audience: document.getElementById("audience-item").value
+    };
+    try{
+        const response = await fetch(
+            `http://localhost:5000/announcement/${editAnnouncementId}`,
+            {
+                method:"PUT",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(data)
+            }
+        );
+        const result = await response.json();
+        if(result.success){
+            alert("Announcement Updated Successfully.");
+            editAnnouncementId = null;
+            loadAnnouncements();
+            closeAnnouncementForm();
+            document.querySelector(".draft").style.display="inline-block";
+            document.querySelector(".public").style.display="inline-block";
+            document.getElementById("update-btn").style.display="none";
+        }
     }catch(err){
         console.log(err);
     }

@@ -60,6 +60,7 @@
                     <label>Audience</label>
                     <select id="audience-item">
                         <option value="">Select Audience</option>
+                        <option value="All">All student's</option>
                         <option value="Girls Hostel">Girls Hostel</option>
                         <option value="Boys Hostel">Boys Hostel</option>
                         <option value="Selected Room">Selected Room</option>
@@ -69,6 +70,7 @@
                 <div class="submit-item">
                     <button class="draft" onclick="saveDraft()">Save Draft</button>
                     <button class="public"  onclick="openPublishModal()">Publish</button>
+                    <button id="update-btn" class="public" style="display:none" onclick="updateAnnouncement()">Update Announcement</button>
                 </div>
             </div>
 
@@ -138,6 +140,7 @@
                 <div class="search-item">
                     <select id="by-status">
                         <option value="">All statuses</option>
+                        <option value="">Draft</option>
                         <option value="pub">Publish</option>
                         <option value="sch">Scheduled</option>
                     </select>

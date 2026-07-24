@@ -1150,6 +1150,54 @@ app.get("/announcement", async (req, res) => {
     }
 });
 
+app.delete("/announcement/:id", async(req, res) => {
+  try{
+    await Announcement.findByIdAndDelete(req.params.id);
+    res.json({
+      success: true,
+      message: "Announcement deleted successfully"
+    });
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+app.put("/announcement/pin/:id", async(req, res) => {
+  try{
+    const announcement = await Announcement.findById(req.params.id);
+    announcement.pin = !announcement.pin;
+    await announcement.save();
+
+    res.json({
+      success: true
+    });
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+app.put("/announcement/:id", async(req, res) => {
+  try{
+    const updateAnnouncement = await Announcement.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    res.json({
+      success: true,
+      message: "Announcement updated successfully",
+      announcement: updateAnnouncement
+    });
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
 
 // Server Start
 app.listen(PORT, () => {

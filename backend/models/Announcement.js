@@ -28,7 +28,7 @@ const announcementSchema = new mongoose.Schema(
 
     audience: {
         type: String,
-        enum: ["Girls Hostel", "Boys Hostel", "Selected Room"],
+        enum: ["All", "Girls Hostel", "Boys Hostel", "Selected Room"],
         required: true
     },
 

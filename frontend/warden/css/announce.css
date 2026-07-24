@@ -600,7 +600,7 @@ p{
     position: absolute;
     right: 0;
     top: 45px;
-    width: 220px;
+    width: 200px;
     background: #fff;
     border-radius: 16px;
     border: 1px solid #e5e7eb;
@@ -624,11 +624,11 @@ p{
 .dropdown-menu a{
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     text-decoration: none;
     padding: 14px 20px;
     color: #475569;
-    font-size: 15px;
+    font-size: 12px;
     transition: .2s;
 }
 
@@ -669,7 +669,7 @@ p{
 ========================== */
 
 .announce-item{
-    margin-top:30px;
+    margin-top:20px;
     background:#fff;
     border:1px solid #e5e7eb;
     border-radius:28px;
@@ -692,7 +692,7 @@ p{
     display:flex;
     align-items:center;
     gap:16px;
-    margin-bottom:20px;
+    margin-bottom:10px;
 }
 
 .top-item span{
@@ -737,7 +737,7 @@ p{
     font-size:18px;
     font-weight:700;
     color:#0f172a;
-    margin-bottom:15px;
+    margin-bottom:10px;
 }
 
 #desc-detail{
@@ -750,7 +750,7 @@ p{
 /* Divider */
 
 .detail{
-    margin-top:20px;
+    margin-top:10px;
     padding-top:25px;
     border-top:1px solid #e5e7eb;
 
@@ -772,7 +772,7 @@ p{
 ========================== */
 
 .seen-detail{
-    margin-top:20px;
+    margin-top:10px;
 
     display:flex;
     justify-content:flex-end;
