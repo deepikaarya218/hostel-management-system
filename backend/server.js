@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cron = require("node-cron");
 
 const User = require("./models/User");
 const Complaint = require("./models/Complaint");
@@ -1100,7 +1101,7 @@ app.get("/notifications/:studentId", async (req, res) => {
 
 app.post("/announcement", async(req, res) => {
   try{
-    const {title, description, category, priority, audience, status, pin, notify} = req.body;
+    const {title, description, category, priority, audience, status, pin, notify, scheduleDate, isScheduled} = req.body;
 
     if (!title || !description || !audience) {
       return res.status(400).json({
@@ -1110,9 +1111,11 @@ app.post("/announcement", async(req, res) => {
     }
 
     const announcement = new Announcement({
-      title, description, category, priority, audience, status, pin, notify
+      title, description, category, priority, audience, status, pin, notify, scheduleDate,
+    isScheduled
     });
 
+    // console.log(announcement);
     await announcement.save();
 
     res.status(201).json({
@@ -1121,6 +1124,7 @@ app.post("/announcement", async(req, res) => {
     });
 
   }catch(err){
+    console.log(err);
     res.status(500).json({
       success: false,
       error: err.message
@@ -1202,4 +1206,36 @@ app.put("/announcement/:id", async(req, res) => {
 // Server Start
 app.listen(PORT, () => {
   console.log(`Server Running on Port ${PORT}`);
+});
+
+cron.schedule("* * * * *", async () => {
+
+    try {
+
+        const now = new Date();
+
+        const announcements = await Announcement.find({
+            status: "Scheduled",
+            scheduleDate: { $lte: now }
+        });
+
+        for (const announcement of announcements) {
+
+            announcement.status = "Published";
+            announcement.isScheduled = false;
+
+            await announcement.save();
+
+            console.log(
+                `Scheduled announcement published: ${announcement.title}`
+            );
+
+        }
+
+    } catch (err) {
+
+        console.log("Cron Error:", err.message);
+
+    }
+
 });

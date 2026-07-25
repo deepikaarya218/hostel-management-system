@@ -83,6 +83,14 @@
                         <label><input type="checkbox" id="pin">Pin Announcement</label>
                         <label><input type="checkbox" id="notify">Notify Students</label>
                     </div>
+                    <div class="publish-btn">
+                        <label><input type="radio" name="publishType" value="publish" checked>Publish Now</label>
+                        <label><input type="radio" name="publishType" value="scheduled">Schedule for later</label>
+                    </div>
+                    <div id="schedule-box" style="display:none;">
+                        <label>Schedule Date & Time</label>
+                        <input type="datetime-local" id="scheduleDate">
+                    </div>
                     <div class="submit-btn">
                         <button class="confirm-btn" onclick="savePublish()">Confirm Publish</button>
                     </div>

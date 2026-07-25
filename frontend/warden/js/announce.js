@@ -135,7 +135,11 @@ async function savePublish(){
     const pin = document.getElementById("pin").checked;
     const notify = document.getElementById("notify").checked;
 
-    const data = {
+    const publishType = document.querySelector('input[name="publishType"]:checked').value;
+    let data;
+
+    if(publishType === "publish"){
+        data = {
         title,
         description,
         category,
@@ -143,8 +147,34 @@ async function savePublish(){
         audience,
         status: "Published",
         pin,
-        notify
+        notify,
+        isScheduled: false,
+        scheduleDate: null
     };
+    }else{
+        const scheduleDate =
+        document.getElementById("scheduleDate").value;
+
+    if (!scheduleDate) {
+        alert("Please select schedule date and time.");
+        return;
+    }
+
+    data = {
+        title,
+        description,
+        category,
+        priority,
+        audience,
+        status: "Scheduled",
+        pin,
+        notify,
+        isScheduled: true,
+        scheduleDate
+    };
+    }
+
+    console.log(data);
     let url = "http://localhost:5000/announcement";
     let method = "POST";
 
@@ -408,6 +438,19 @@ async function updateAnnouncement(){
         console.log(err);
     }
 }
+
+const publishType = document.getElementsByName("publishType");
+
+publishType.forEach(radio =>{
+    radio.addEventListener("change", function(){
+        if(this.value === "scheduled"){
+            document.getElementById("schedule-box").style.display = "block";
+        }else{
+            document.getElementById("schedule-box").style.display = "none";
+            document.getElementById("scheduleDate").value = "";
+        }
+    });
+});
 
 // Outside click -> close menu
 document.addEventListener("click", function () {

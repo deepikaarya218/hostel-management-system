@@ -34,7 +34,7 @@ const announcementSchema = new mongoose.Schema(
 
     status: {
         type: String,
-        enum: ["Draft", "Published"],
+        enum: ["Draft", "Published", "Scheduled"],
         default: "Draft"
     },
 
@@ -46,7 +46,15 @@ const announcementSchema = new mongoose.Schema(
     notify: {
         type: Boolean,
         default: false
-    }
+    },
+    scheduleDate: {
+        type: Date,
+        default: null
+    },
+    isScheduled: {
+        type: Boolean,
+        default: false
+    },
 
 },
 {
