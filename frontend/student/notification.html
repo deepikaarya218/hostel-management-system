@@ -9,10 +9,88 @@
         <!-- Include the slidebar -->
         <div class="container">
             <div id="slidebar-container"></div>
+
             <div class="main-content">
                 <h1>Notifications</h1>
-                <p>Stay updated with latest announcements from Admin and Warden</p>
-                <div class="notification-class" id="notification-list">
+                <p id="current-date"></p>
+                
+                <!-- SUMMARY CARD -->
+                <div class="menu-summary">
+                <div class="sum-item">
+                    <h4 id="total-announce"></h4>
+                    <span>Total notifications</span>
+                </div>
+                <div class="sum-item">
+                    <h4 id="total-unread"></h4>
+                    <span>Unread Notifications</span>
+                </div>
+                <div class="sum-item">
+                    <h4 id="total-pinned"></h4>
+                    <span>Pinned Notifications</span>
+                </div>
+                <div class="sum-item">
+                    <h4 id="total-high"></h4>
+                    <span>High priority</span>
+                </div>
+                </div>
+
+                <h3>All Notifications (3)</h3>
+
+                <!-- SEARCH BAR -->
+                <div class="search">
+                <div class="search-item">
+                    <input type="text" placeholder="Search announcements...">
+                </div>
+                <div class="search-item">
+                    <select class="by-category">
+                        <option value="">All Categories</option>
+                        <option value="mess">Mess</option>
+                        <option value="payment">Payment</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="emergency">Emergency</option>
+                        <option value="event">Events</option>
+                    </select>
+                </div>
+                <div class="search-item">
+                    <select id="by-priority">
+                        <option value="">All priorities</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="search-item">
+                    <button class="clear-filter">✖ Clear</button>
+                </div>
+            </div>
+
+            <!-- NOTIFICATION FEED -->
+            <div class="notification-class" id="notification-list">
+                <div class="top-item">
+                    <div class="top-left">
+                        <span id="priority-detail">High priority</span>
+                        <span id="pinned-detail">📌Pinned</span>
+                    </div>
+                    <div class="top-right">
+                        <span id="category-detail">General</span>
+                    </div>
+                </div>
+                <div class="description">
+                    <div class="main-detail">
+                        <h4 id="desc-heading">Hostel curfew timing updated</h4>
+                        <span id="desc-detail">Please note that the hostel entry curfew has been updated to 10:30 PM from Monday onwards. Students arriving late must register at the security desk and carry their valid student ID.</span>
+                    </div>
+                </div>
+                <div class="detail">
+                    <span id="by-whom">Warden</span>
+                    <span id="date-time">26-07-2026, 09:42 AM</span>
+                    <div class="view">
+                        <button type="submit">✔️ Mark as Read</button>
+                    </div>
+                </div>
+            </div>
+
+                <!-- <div class="notification-class" id="notification-list">
                     <div class="notify-item">
                         <h3>WiFi Maintenance</h3>
                         <p>The WiFi network will be down for maintenance on Saturday, April 24th from 2:00 PM to 4:00 PM. We apologize for any inconvenience this may cause.</p>
@@ -22,7 +100,7 @@
                             <span class="author">Admin</span>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </body>

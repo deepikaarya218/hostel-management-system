@@ -11,42 +11,238 @@
 }
 
 .main-content p{
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 14px;
+    margin-bottom: 30px;
     margin-left: 30px;
+}
+
+.menu-summary{
+    display: grid;
+    margin-left: 30px;
+    grid-template-columns:  repeat(5, 1fr);
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.sum-item{
+    height: 100px;
+    width: 170px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(15,23,42,.06);
+    transition: .3s;
+}
+
+.sum-item:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 14px 35px rgba(37,99,235,.12);
+}
+
+.sum-item h4{
+    font-size: 24px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+.sum-item span{
+    font-size: 14px;
+    color: #64748b;
+}
+
+.search{
+    margin-top:30px;
+    margin-left: 30px;
+    background:#fff;
+    border-radius:22px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 8px 24px rgba(15,23,42,.06);
+}
+
+.search-item{
+    display:flex;
+}
+
+.search-item:first-child{
+    flex:1;
+}
+
+.search input{
+    width:90%;
+    height:38px;
+    padding:0 20px;
+    border:1px solid #dbe3ef;
+    border-radius:12px;
+    font-size:14px;
+    outline:none;
+    transition:.3s;
+}
+
+.search input:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+}
+
+.search select{
+    height:38px;
+    width:180px;
+    padding:0 18px;
+    border:1px solid #dbe3ef;
+    border-radius:12px;
+    font-size:14px;
+    background:#fff;
+    cursor:pointer;
+    outline:none;
+    transition:.3s;
+}
+
+.search select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+}
+
+.clear-filter{
+    height:38px;
+    padding:0 25px;
+    border:none;
+    border-radius:16px;
+    background:#f8fafc;
+    color:#475569;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.clear-filter:hover{
+    background:#d1d5db;
+}
+
+h3{
+    margin-left: 35px;
 }
 
 .notification-class{
-    margin: 30px;
-    display: flex;
-    flex-direction: column;
-    background-color: #fcfafa;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top:20px;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:28px;
+    padding:30px 40px;
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+    transition:.3s;
+    margin-left: 30px;
 }
 
-.notify-item{
+.notification-class:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 45px rgba(37,99,235,.10);
+}
+
+.top-item{
+    margin-top: 20px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:30px;
+}
+
+.top-item span{
+    padding:10px 18px;
+    border-radius:25px;
+    font-size:12px;
+    font-weight:600;
+}
+
+#priority-detail{
+    background:#fff;
+    color:#0f172a;
+    border:1px solid #dbe3ef;
+}
+
+#pinned-detail{
+    background:#eef4ff;
+    color:#2563eb;
+}
+
+#category-detail{
+    background:#f3f4f6;
+    color:#475569;
+}
+
+
+
+.description-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:30px;
+}
+
+.main-detail{
+    flex:1;
+}
+
+#desc-heading{
+    font-size:18px;
+    font-weight:700;
+    color:#0f172a;
+    margin-bottom:10px;
+}
+
+#desc-detail{
+    display:block;
+    font-size:16px;
+    line-height:1.7;
+    color:#64748b;
+}
+
+
+.detail{
+    margin-top:10px;
+    padding-top:25px;
+    border-top:1px solid #e5e7eb;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    font-size:16px;
+    color:#64748b;
+}
+
+.view{
+    margin-left:auto;
+}
+#by-whom{
+    font-weight:600;
+    color:#334155;
+}
+
+.view{
     display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    background-color: #E6DDF5;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    padding: 15px;
-    margin : 10px;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+.view button{
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
     border-radius: 8px;
-
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.notify-item h3{
-    margin-left: 30px;
+.view button:hover{
+    background: #1d4ed8;
 }
 
-.item-footer{
-    margin-left: 30px;
-    margin-top: 10px;
-}
-
-.notify-item:hover{
-    background-color: #daceee;
-}

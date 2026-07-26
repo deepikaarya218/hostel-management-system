@@ -11,42 +11,58 @@ function loadSidebar() {
         .catch(err => console.log(err));
 }
 
-async function loadNotifications() {
+function showCurrentDate(){
+    const today = new Date();
 
-    const studentId = localStorage.getItem("userId");
+    const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    };
 
-    const response = await fetch(
-        `http://localhost:5000/notifications/${studentId}`
-    );
-
-    const notifications = await response.json();
-
-    const container = document.getElementById("notification-list");
-    container.innerHTML = "";
-
-    notifications.forEach(note => {
-
-        const date = new Date(note.createdAt);
-
-        container.innerHTML += `
-            <div class="notify-item">
-                <h3>${note.title}</h3>
-
-                <p>${note.message}</p>
-
-                <div class="item-footer">
-                    <span>${date.toLocaleDateString("en-IN")}</span>
-                    <span>${date.toLocaleTimeString("en-IN")}</span>
-                    <span>Warden</span>
-                </div>
-            </div>
-        `;
-
-    });
-
+    const formattedDate = today.toLocaleDateString("en-IN", options);
+    document.getElementById("current-date").innerText = formattedDate;
 }
+
+
+// async function loadNotifications() {
+
+//     const studentId = localStorage.getItem("userId");
+
+//     const response = await fetch(
+//         `http://localhost:5000/notifications/${studentId}`
+//     );
+
+//     const notifications = await response.json();
+
+//     const container = document.getElementById("notification-list");
+//     container.innerHTML = "";
+
+//     notifications.forEach(note => {
+
+//         const date = new Date(note.createdAt);
+
+//         container.innerHTML += `
+//             <div class="notify-item">
+//                 <h3>${note.title}</h3>
+
+//                 <p>${note.message}</p>
+
+//                 <div class="item-footer">
+//                     <span>${date.toLocaleDateString("en-IN")}</span>
+//                     <span>${date.toLocaleTimeString("en-IN")}</span>
+//                     <span>Warden</span>
+//                 </div>
+//             </div>
+//         `;
+
+//     });
+
+// }
 
 window.onload = function () {
     loadSidebar();
-    loadNotifications();
+    showCurrentDate()
+    // loadNotifications();
 }
