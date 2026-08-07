@@ -61,8 +61,158 @@ function showCurrentDate(){
 
 // }
 
+
+
+async function loadNotifications() {
+    try {
+
+        const response = await fetch("http://localhost:5000/student/notifications");
+        const result = await response.json();
+
+        if (!result.success) return;
+
+        // Summary
+        document.getElementById("total-announce").innerText =
+            result.summary.total;
+
+        document.getElementById("total-pinned").innerText =
+            result.summary.pinned;
+
+        document.getElementById("total-high").innerText =
+            result.summary.high;
+
+        let unread = 0;
+
+        result.notifications.forEach(item => {
+            if (localStorage.getItem(`read_${item._id}`) !== "true") {
+                unread++;
+            }
+        });
+
+        document.getElementById("total-unread").innerText = unread;
+
+        const container = document.getElementById("notification-list");
+        container.innerHTML = "";
+
+        result.notifications.forEach(item => {
+
+            const isRead =
+                localStorage.getItem(`read_${item._id}`) === "true";
+
+            container.innerHTML += `
+                <div class="notification-class">
+
+                    <div class="top-item">
+
+                        <div class="top-left">
+
+                            <span class="priority-detail">
+                                ${item.priority.toUpperCase()} PRIORITY
+                            </span>
+
+                            ${
+                                item.pin
+                                ? `<span class="pinned-detail">📌 Pinned</span>`
+                                : ""
+                            }
+
+                        </div>
+
+                        <div class="top-right">
+
+                            <span class="category-detail">
+                                ${item.category}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="description">
+
+                        <div class="main-detail">
+
+                            <h4 class="desc-heading">
+                                ${item.title}
+                            </h4>
+
+                            <span class="desc-detail">
+                                ${item.description}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="detail">
+
+                        <span class="by-whom">
+                            Warden
+                        </span>
+
+                        <span class="date-time">
+                            ${new Date(item.createdAt).toLocaleString()}
+                        </span>
+
+                        <div class="view">
+
+                            <button
+                                class="${isRead ? 'read-btn read' : 'read-btn'}"
+                                ${isRead ? "disabled" : ""}
+                                onclick="markAsRead('${item._id}')"
+                            >
+                                ${isRead ? "✔ Read" : "✔️ Mark as Read"}
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+    }
+}
+
+async function markAsRead(id) {
+
+    if (localStorage.getItem(`read_${id}`) === "true") {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:5000/student/read/${id}`,
+            {
+                method: "PUT"
+            }
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+
+            localStorage.setItem(`read_${id}`, "true");
+
+            loadNotifications();
+
+        }
+
+    } catch (err) {
+
+        console.log(err);
+
+    }
+}
+
 window.onload = function () {
     loadSidebar();
-    showCurrentDate()
-    // loadNotifications();
-}
+    showCurrentDate();
+    loadNotifications();
+};

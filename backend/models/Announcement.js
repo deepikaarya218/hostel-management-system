@@ -47,10 +47,17 @@ const announcementSchema = new mongoose.Schema(
         type: Boolean,
         default: false
     },
+
+    readBy: {
+        type: Number,
+        default: 0
+    },
+
     scheduleDate: {
         type: Date,
         default: null
     },
+    
     isScheduled: {
         type: Boolean,
         default: false

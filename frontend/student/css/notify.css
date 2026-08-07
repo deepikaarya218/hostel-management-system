@@ -144,12 +144,24 @@ h3{
     box-shadow:0 18px 45px rgba(37,99,235,.10);
 }
 
+
 .top-item{
-    margin-top: 20px;
+    justify-content:space-between;
     display:flex;
     align-items:center;
     gap:16px;
     margin-bottom:30px;
+}
+
+.top-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.top-right{
+    display:flex;
+    align-items:center;
 }
 
 .top-item span{
@@ -175,7 +187,9 @@ h3{
     color:#475569;
 }
 
-
+.main-detail{
+    margin-bottom:20px;
+}
 
 .description-item{
     display:flex;
@@ -186,6 +200,13 @@ h3{
 
 .main-detail{
     flex:1;
+}
+
+.desc-heading{
+    font-size:20px;
+    font-weight:700;
+    color:#0f172a;
+    margin-bottom:10px;
 }
 
 #desc-heading{
@@ -202,47 +223,65 @@ h3{
     color:#64748b;
 }
 
-
 .detail{
-    margin-top:10px;
-    padding-top:25px;
-    border-top:1px solid #e5e7eb;
-
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:15px;
+    margin-top:20px;
+    padding-top:20px;
+    border-top:1px solid #e5e7eb;
+    color:#64748b;
+    font-size:15px;
+}
 
-    font-size:16px;
+.by-whom{
+    font-weight:600;
+    color:#334155;
+}
+
+.date-time{
     color:#64748b;
 }
 
 .view{
     margin-left:auto;
 }
-#by-whom{
-    font-weight:600;
-    color:#334155;
-}
-
-.view{
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 12px;
-}
 
 .view button{
-    background: #2563eb;
-    color: #fff;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
 }
 
 .view button:hover{
-    background: #1d4ed8;
+    background:#1d4ed8;
 }
 
+.read-btn{
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.read-btn:hover{
+    background:#1d4ed8;
+}
+
+.read-btn.read{
+    background:#16a34a;
+}
+
+.read-btn:disabled{
+    cursor:not-allowed;
+    opacity:1;
+}

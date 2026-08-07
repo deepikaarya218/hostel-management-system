@@ -1202,6 +1202,71 @@ app.put("/announcement/:id", async(req, res) => {
   }
 });
 
+app.get("/student/notifications", async (req, res) => {
+    try {
+
+        const notifications = await Announcement.find({
+            status: "Published",
+        }).sort({
+            pin: -1,
+            createdAt: -1
+        });
+
+        const summary = {
+            total: notifications.length,
+            pinned: notifications.filter(item => item.pin).length,
+            high: notifications.filter(item => item.priority === "High").length,
+
+            // Abhi read feature nahi hai
+            unread: notifications.length
+        };
+
+        res.status(200).json({
+            success: true,
+            summary,
+            notifications
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            error: err.message
+        });
+
+    }
+});
+
+app.put("/student/read/:id", async (req, res) => {
+    try {
+
+        const announcement = await Announcement.findById(req.params.id);
+
+        if (!announcement) {
+            return res.status(404).json({
+                success: false,
+                message: "Announcement not found"
+            });
+        }
+
+        announcement.readBy += 1;
+
+        await announcement.save();
+
+        res.json({
+            success: true
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            error: err.message
+        });
+
+    }
+});
+
 
 // Server Start
 app.listen(PORT, () => {
